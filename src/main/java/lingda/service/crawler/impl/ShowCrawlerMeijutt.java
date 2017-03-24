@@ -1,12 +1,12 @@
-package service.crawler.impl;
+package lingda.service.crawler.impl;
 
-import model.DownLoadLink;
-import model.TVShow;
+import lingda.model.DownLoadLink;
+import lingda.model.TVShow;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import service.crawler.ShowCrawler;
+import lingda.service.crawler.ShowCrawler;
 
 import java.io.IOException;
 import java.net.URL;

@@ -1,15 +1,18 @@
-import model.DownLoadLink;
-import model.TVShow;
+package lingda;
+
+import lingda.model.DownLoadLink;
+import lingda.model.TVShow;
+import lingda.service.crawler.ShowCrawler;
+import lingda.service.manager.ShowManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import service.crawler.ShowCrawler;
-import service.manager.ShowManager;
 
 import java.util.List;
 
-@SpringBootApplication(scanBasePackages = {"service", "model"})
+@SpringBootApplication
 public class TVShowApplication implements CommandLineRunner {
 
     @Autowired
@@ -17,6 +20,7 @@ public class TVShowApplication implements CommandLineRunner {
 
     @Autowired
     private ShowManager showManager;
+
 
     public static void main(String[] args) {
         SpringApplication.run(TVShowApplication.class, args);
@@ -29,5 +33,6 @@ public class TVShowApplication implements CommandLineRunner {
         List<DownLoadLink> downLoadLinkList = showCrawler.extractDownloadLinks(showList);
         System.out.println(downLoadLinkList);
     }
+
 
 }

@@ -1,7 +1,7 @@
-package service.crawler;
+package lingda.service.crawler;
 
-import model.DownLoadLink;
-import model.TVShow;
+import lingda.model.DownLoadLink;
+import lingda.model.TVShow;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

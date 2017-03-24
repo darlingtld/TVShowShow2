@@ -1,4 +1,4 @@
-package model;
+package lingda.model;
 
 import java.net.URL;
 

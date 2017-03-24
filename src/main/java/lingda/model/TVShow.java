@@ -1,10 +1,23 @@
-package model;
+package lingda.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by lingda on 11/11/16.
  */
+@Entity
+@Table(name = "tvshow")
 public class TVShow {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String name;
+    @Column(name = "english_name")
     private String englishName;
     private String description;
     private Integer season;
@@ -13,12 +26,21 @@ public class TVShow {
     @Override
     public String toString() {
         return "TVShow{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +
                 ", description='" + description + '\'' +
                 ", season=" + season +
                 ", episode=" + episode +
                 '}';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEnglishName() {
