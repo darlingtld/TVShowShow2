@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface ShowManager {
     List<TVShow> getShowList();
+
+    TVShow addNew(TVShow tvShow);
 }

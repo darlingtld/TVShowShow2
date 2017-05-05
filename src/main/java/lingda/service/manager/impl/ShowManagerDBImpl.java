@@ -21,4 +21,9 @@ public class ShowManagerDBImpl implements ShowManager {
     public List<TVShow> getShowList() {
         return tvShowRepository.findAll();
     }
+
+    @Override
+    public TVShow addNew(TVShow tvShow) {
+        return tvShowRepository.save(tvShow);
+    }
 }

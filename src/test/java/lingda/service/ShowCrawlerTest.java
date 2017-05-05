@@ -23,7 +23,6 @@ public class ShowCrawlerTest {
 
     @Test
     public void testFetchHTML() throws IOException {
-        showCrawler.fetchHTML();
-
+//        showCrawler.fetchHTML();
     }
 }
