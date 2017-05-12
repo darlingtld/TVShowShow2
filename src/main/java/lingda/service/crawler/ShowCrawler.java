@@ -19,9 +19,9 @@ public abstract class ShowCrawler {
         return doc.html();
     }
 
-    public abstract String searchShow(String showName, int season, int episode);
+    public abstract String searchShow(TVShow show);
 
     public abstract List<URL> getDownloadLinks();
 
-    public abstract List<DownLoadLink> extractDownloadLinks(List<TVShow> showList);
+    public abstract List<DownLoadLink> extractDownloadLinks(TVShow show);
 }

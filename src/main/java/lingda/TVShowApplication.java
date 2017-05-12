@@ -29,9 +29,11 @@ public class TVShowApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
 //        get all the tv show list that I am now watching
-        List<TVShow> showList = showManager.getShowList();
-        List<DownLoadLink> downLoadLinkList = showCrawler.extractDownloadLinks(showList);
-        System.out.println(downLoadLinkList);
+        List<TVShow> showList = showManager.getLatestListPerShow();
+        for (TVShow show : showList) {
+            List<DownLoadLink> downLoadLinkList = showCrawler.extractDownloadLinks(show);
+            System.out.println(downLoadLinkList);
+        }
     }
 
 
