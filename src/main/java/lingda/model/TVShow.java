@@ -23,6 +23,17 @@ public class TVShow {
     private Integer season;
     private Integer episode;
 
+    public TVShow(String name, String englishName, String description, Integer season, Integer episode) {
+        this.name = name;
+        this.englishName = englishName;
+        this.description = description;
+        this.season = season;
+        this.episode = episode;
+    }
+
+    public TVShow() {
+    }
+
     @Override
     public String toString() {
         return "TVShow{" +
