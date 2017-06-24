@@ -1,13 +1,11 @@
 package lingda.model;
 
-import java.net.URL;
-
 /**
  * Created by lingda on 24/03/2017.
  */
 public class DownLoadLink {
 
-    private URL link;
+    private String link;
     private TVShow tvShow;
     private LinkType linkType;
 
@@ -16,15 +14,19 @@ public class DownLoadLink {
         return "DownLoadLink{" +
                 "link=" + link +
                 ", tvShow=" + tvShow +
-                ", linkType=" + linkType +
                 '}';
     }
 
-    public URL getLink() {
+    public DownLoadLink(String link, TVShow tvShow) {
+        this.link = link;
+        this.tvShow = tvShow;
+    }
+
+    public String getLink() {
         return link;
     }
 
-    public void setLink(URL link) {
+    public void setLink(String link) {
         this.link = link;
     }
 
@@ -37,14 +39,14 @@ public class DownLoadLink {
     }
 
     public LinkType getLinkType() {
-        return linkType;
-    }
-
-    public void setLinkType(LinkType linkType) {
-        this.linkType = linkType;
+        if (this.link.startsWith("ed2k")) {
+            return LinkType.EMULE;
+        } else {
+            return linkType.THUNDER;
+        }
     }
 
     enum LinkType {
-        THUNDER
+        THUNDER, EMULE
     }
 }

@@ -23,7 +23,8 @@ public class TVShow {
     private Integer season;
     private Integer episode;
 
-    public TVShow(String name, String englishName, String description, Integer season, Integer episode) {
+    public TVShow(Long id, String name, String englishName, String description, Integer season, Integer episode) {
+        this.id = id;
         this.name = name;
         this.englishName = englishName;
         this.description = description;

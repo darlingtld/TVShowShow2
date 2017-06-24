@@ -4,6 +4,8 @@ import lingda.model.DownLoadLink;
 import lingda.model.TVShow;
 import lingda.service.crawler.ShowCrawler;
 import lingda.service.manager.ShowManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,7 +15,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.List;
 
 @SpringBootApplication
-public class TVShowApplication implements CommandLineRunner {
+public class TVShowApplication /*implements CommandLineRunner*/ {
+
+    private static final Logger logger = LoggerFactory.getLogger(TVShowApplication.class);
 
     @Autowired
     private ShowCrawler showCrawler;
@@ -26,15 +30,20 @@ public class TVShowApplication implements CommandLineRunner {
         SpringApplication.run(TVShowApplication.class, args);
     }
 
-    @Override
-    public void run(String... args) {
-//        get all the tv show list that I am now watching
-        List<TVShow> showList = showManager.getLatestListPerShow();
-        for (TVShow show : showList) {
-            List<DownLoadLink> downLoadLinkList = showCrawler.extractDownloadLinks(show);
-            System.out.println(downLoadLinkList);
-        }
-    }
+//    @Override
+//    public void run(String... args) {
+//        logger.info("Get all the latest episodes per show I am now watching");
+//        try {
+//            List<TVShow> showList = showManager.getLatestListPerShow();
+//            showList.forEach(System.out::println);
+//            for (TVShow show : showList) {
+//                List<DownLoadLink> downLoadLinkList = showCrawler.getDownloadLinks(show);
+//                System.out.println(downLoadLinkList);
+//            }
+//        } catch (Exception e) {
+//            logger.error(e.getMessage());
+//        }
+//    }
 
 
 }

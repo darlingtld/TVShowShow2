@@ -16,7 +16,7 @@ public interface TVShowRepository extends JpaRepository<TVShow, Long> {
 
     List<TVShow> findByName(String name);
 
-    @Query("select new lingda.model.TVShow(name, englishName, description, season, max(episode)) " +
+    @Query("select new lingda.model.TVShow(max(id), name, max(englishName), max(description), season, max(episode)) " +
             "from TVShow tv group by tv.name, tv.season")
     List<TVShow> findLatestListPerShow();
 }
