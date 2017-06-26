@@ -1,2 +1,15 @@
+:host {
+  width: 50%;
+}
+
 div.search-form {
+  width: 100%;
+}
+
+div.search-form form {
+  justify-content: space-between;
+}
+
+.search-form-text {
+  width: 85%;
 }

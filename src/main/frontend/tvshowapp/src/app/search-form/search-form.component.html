@@ -1,8 +1,7 @@
 <div class="search-form">
-<form [formGroup]="searchForm" (ngSubmit)="onSubmit(searchForm)">
-  <input formControlName="text" placeholder="Search the tv shows you like!">
-
-  <button type="submit">Search</button>
-</form>
+  <form class="form-inline" [formGroup]="searchForm" (ngSubmit)="onSubmit(searchForm)">
+    <input class="form-control search-form-text" formControlName="text" placeholder="Search the tv shows you like!">
+    <button class="btn btn-primary search-form-submit" type="submit">Search</button>
+  </form>
 </div>
 

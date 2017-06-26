@@ -34,6 +34,7 @@
     "@angular/language-service": "^4.0.0",
     "@types/jasmine": "2.5.45",
     "@types/node": "~6.0.60",
+    "bootstrap": "^4.0.0-alpha.6",
     "codelyzer": "~3.0.1",
     "copyfiles": "^1.2.0",
     "jasmine-core": "~2.6.2",
