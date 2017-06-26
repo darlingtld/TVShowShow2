@@ -2,25 +2,9 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {RouterModule, Routes} from '@angular/router';
 import {AppComponent} from './app.component';
+import {AppRouteModule} from './app-route.module';
 import {SearchFormComponent} from './search-form/search-form.component';
-
-const appRoutes: Routes = [
-  {path: 'search', component: SearchFormComponent},
-  // { path: 'hero/:id',      component: HeroDetailComponent },
-  // {
-  //   path: 'heroes',
-  //   component: HeroListComponent,
-  //   data: { title: 'Heroes List' }
-  // },
-  {
-    path: '',
-    redirectTo: '/search',
-    pathMatch: 'full'
-  },
-  {path: '**', component: SearchFormComponent}
-];
 
 @NgModule({
   declarations: [
@@ -28,7 +12,7 @@ const appRoutes: Routes = [
     SearchFormComponent
   ],
   imports: [
-    BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, RouterModule.forRoot(appRoutes, {useHash: true})
+    BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, AppRouteModule
   ],
   providers: [],
   bootstrap: [AppComponent]
