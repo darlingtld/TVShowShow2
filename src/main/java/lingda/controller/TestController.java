@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by lingda on 24/06/2017.
  */
 @RestController
-@RequestMapping("/")
+@RequestMapping("test")
 public class TestController {
 
     @RequestMapping(method = RequestMethod.GET)
