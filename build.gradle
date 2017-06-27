@@ -37,6 +37,14 @@ repositories {
     mavenCentral()
 }
 
+task buildAngular(type: Exec) {
+    workingDir 'src/main/frontend/tvshowapp'
+    commandLine 'npm', 'run', 'build'
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = {
+        return standardOutput.toString()
+    }
+}
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter')
