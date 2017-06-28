@@ -1,7 +1,6 @@
 package lingda.service.crawler.impl;
 
 import lingda.model.TVShow;
-import org.jsoup.nodes.Element;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,14 +18,14 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ShowCrawlerMeijuttTest {
+public class ShowCrawlerMeijuttImplTest {
 
     @Autowired
-    private ShowCrawlerMeijutt showCrawlerMeijutt;
+    private ShowCrawlerMeijuttImpl showCrawlerMeijuttImpl;
 
     @Test
     public void shouldGetSomethingFromSearchShow() {
-        Map<String, String> showToUrlMap = showCrawlerMeijutt.searchShow(new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
+        Map<String, String> showToUrlMap = showCrawlerMeijuttImpl.searchShow(new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
         for (Map.Entry<String, String> entry : showToUrlMap.entrySet()) {
             System.out.println(entry);
         }
@@ -36,7 +34,7 @@ public class ShowCrawlerMeijuttTest {
 
     @Test
     public void shouldGetDownloadLinks() {
-        showCrawlerMeijutt.getDownloadLinks(new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
+        showCrawlerMeijuttImpl.getDownloadLinks(new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
     }
 
     @Test

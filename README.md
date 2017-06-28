@@ -1,13 +1,15 @@
 **This app is using Spring boot and Angular 4**
 
 #Start the application
-> make sure mysql is up
+> Configurations can be found in application.properties
+> Start the MySQL server(On Mac, mysql.server start).  
 ```
 gradle clean buildAngular bootRun
 ```
+*this command clean the compiled java classes, build the angular code, copy them under the static folder and build the start the spring boot project*
 #Angular build process
-`
+```
 cd src/main/frontend/tvshowapp
 npm run build
-`
-It will build the angular app and copy the dist directory under the main/resources
+```
+*It will build the angular app and copy the dist directory under the main/resources*

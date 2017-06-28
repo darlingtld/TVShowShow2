@@ -23,7 +23,7 @@ export class SearchFormComponent implements OnInit {
   onSubmit(form: FormGroup) {
     console.log('Valid?', form.valid); // true or false
     console.log('Search Text', form.value.text);
-    console.log(this.showService.getShows());
+    console.log(this.showService.search(form.value.text));
   }
 
 

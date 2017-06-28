@@ -13,11 +13,9 @@ import org.springframework.stereotype.Service;
 import lingda.service.crawler.ShowCrawler;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,9 +24,9 @@ import java.util.Optional;
  * Created by lingda on 11/11/16.
  */
 @Service
-public class ShowCrawlerMeijutt extends ShowCrawler {
+public class ShowCrawlerMeijuttImpl extends ShowCrawler {
 
-    private static final Logger logger = LoggerFactory.getLogger(ShowCrawlerMeijutt.class);
+    private static final Logger logger = LoggerFactory.getLogger(ShowCrawlerMeijuttImpl.class);
 
     @Value("${site.meijutt}")
     private String site;
