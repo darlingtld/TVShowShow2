@@ -1,6 +1,6 @@
 package lingda.service.manager;
 
-import lingda.model.TVShow;
+import lingda.model.pojo.TVShow;
 
 import java.util.List;
 

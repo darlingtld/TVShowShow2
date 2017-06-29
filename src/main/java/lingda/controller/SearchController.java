@@ -1,7 +1,7 @@
 package lingda.controller;
 
-import lingda.model.SearchTerm;
-import lingda.model.TVShow;
+import lingda.model.dto.SearchTerm;
+import lingda.model.dto.TVShowSearchResult;
 import lingda.service.search.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +21,9 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
-    @PostMapping("/show")
-    public List<TVShow> searchTVShow(@RequestBody SearchTerm searchTerm) {
-        return null;
+    @PostMapping()
+    public List<TVShowSearchResult> searchTVShow(@RequestBody SearchTerm searchTerm) {
+        return searchService.searchTVShow(searchTerm);
     }
 
 }

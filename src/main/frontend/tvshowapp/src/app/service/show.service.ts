@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {TVShow} from '../model/TVShow';
+import {Tvshow} from '../model/tvshow';
 
 @Injectable()
 export class ShowService {
@@ -10,15 +10,9 @@ export class ShowService {
   constructor(private http: Http) {
   }
 
-  getShows(): Promise<TVShow[]> {
+  getShows(): Promise<Tvshow[]> {
     return this.http.get(this.showUrl).toPromise()
-      .then(response => response.json().data as TVShow[])
-      .catch(this.handleError);
-  }
-
-  search(term: string): Promise<TVShow[]> {
-    return this.http.post(this.showUrl, {}).toPromise()
-      .then(response => response.json().data as TVShow[])
+      .then(response => response.json().data as Tvshow[])
       .catch(this.handleError);
   }
 
@@ -26,5 +20,6 @@ export class ShowService {
     console.error('An error occurred', error);
     return Promise.reject(error.message || error);
   }
+
 
 }

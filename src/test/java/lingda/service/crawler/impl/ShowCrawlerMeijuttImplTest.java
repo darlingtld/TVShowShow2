@@ -1,7 +1,8 @@
 package lingda.service.crawler.impl;
 
-import lingda.model.TVShow;
-import org.junit.Assert;
+import lingda.model.dto.TVShowSearchResult;
+import lingda.model.pojo.TVShow;
+import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Created by lingda on 12/05/2017.
@@ -25,11 +32,13 @@ public class ShowCrawlerMeijuttImplTest {
 
     @Test
     public void shouldGetSomethingFromSearchShow() {
-        Map<String, String> showToUrlMap = showCrawlerMeijuttImpl.searchShow(new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
-        for (Map.Entry<String, String> entry : showToUrlMap.entrySet()) {
-            System.out.println(entry);
-        }
-        Assert.assertTrue(showToUrlMap.size() > 0);
+        List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijuttImpl.searchShow(new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
+        tvShowSearchResultList.forEach(System.out::println);
+        assertThat(tvShowSearchResultList, not(IsEmptyCollection.empty()));
+//        check the first item
+        TVShowSearchResult result = tvShowSearchResultList.get(0);
+        assertThat(result.getName(), startsWith("实习医生格蕾"));
+        assertThat(result.getEnglishName(), startsWith("Grey‘s Anatomy"));
     }
 
     @Test

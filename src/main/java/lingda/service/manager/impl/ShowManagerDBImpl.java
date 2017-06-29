@@ -1,7 +1,7 @@
 package lingda.service.manager.impl;
 
 import lingda.dao.TVShowRepository;
-import lingda.model.TVShow;
+import lingda.model.pojo.TVShow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lingda.service.manager.ShowManager;

@@ -1,7 +1,9 @@
 package lingda.service.crawler;
 
-import lingda.model.DownLoadLink;
-import lingda.model.TVShow;
+import lingda.model.dto.DownLoadLink;
+import lingda.model.dto.SearchTerm;
+import lingda.model.dto.TVShowSearchResult;
+import lingda.model.pojo.TVShow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +22,17 @@ public abstract class ShowCrawler {
     private static final Logger logger = LoggerFactory.getLogger(ShowCrawler.class);
 
     /**
+     *
+     * @param searchTerm the search term
+     * @return a map containing the show name and the url, null if nothing is found
+     */
+    public abstract List<TVShowSearchResult> search(SearchTerm searchTerm);
+
+    /**
      * @param show the latest show that is now being watched
      * @return a map containing the show name and the url, null if nothing is found
      */
-    protected abstract Map<String, String> searchShow(TVShow show);
+    protected abstract List<TVShowSearchResult> searchShow(TVShow show);
 
     /**
      * get all the download links matching the url
@@ -47,11 +56,11 @@ public abstract class ShowCrawler {
      * @param showToUrlMap
      * @return
      */
-    protected abstract Optional<String> findMatchedShowUrl(TVShow show, Map<String, String> showToUrlMap);
+    protected abstract Optional<String> findMatchedShowUrl(TVShow show, List<TVShowSearchResult> showToUrlMap);
 
     public List<DownLoadLink> getDownloadLinks(TVShow show) {
 
-        Map<String, String> showToUrlMap = searchShow(show);
+        List<TVShowSearchResult> showToUrlMap = searchShow(show);
 
         if (Objects.nonNull(showToUrlMap)) {
             List<DownLoadLink> downLoadLinkList = new ArrayList<>();

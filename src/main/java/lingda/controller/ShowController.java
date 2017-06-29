@@ -1,6 +1,6 @@
 package lingda.controller;
 
-import lingda.model.TVShow;
+import lingda.model.pojo.TVShow;
 import lingda.service.manager.ShowManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

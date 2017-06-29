@@ -1,7 +1,7 @@
 package lingda.service.search;
 
-import lingda.model.SearchTerm;
-import lingda.model.TVShow;
+import lingda.model.dto.SearchTerm;
+import lingda.model.dto.TVShowSearchResult;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface SearchService {
 
-    List<TVShow> searchTVShow(SearchTerm searchTerm);
+    List<TVShowSearchResult> searchTVShow(SearchTerm searchTerm);
 }

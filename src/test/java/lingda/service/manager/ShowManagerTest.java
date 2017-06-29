@@ -1,6 +1,6 @@
 package lingda.service.manager;
 
-import lingda.model.TVShow;
+import lingda.model.pojo.TVShow;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

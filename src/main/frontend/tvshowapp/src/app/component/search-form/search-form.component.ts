@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import {ShowService} from '../../service/show.service';
+import {FormGroup, FormBuilder} from '@angular/forms';
+import {SearchService} from '../../service/search.service';
 
 @Component({
   selector: 'app-search-form',
@@ -11,7 +11,7 @@ export class SearchFormComponent implements OnInit {
 
   searchForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private showService: ShowService) {
+  constructor(private formBuilder: FormBuilder, private searchService: SearchService) {
   }
 
   ngOnInit() {
@@ -23,7 +23,7 @@ export class SearchFormComponent implements OnInit {
   onSubmit(form: FormGroup) {
     console.log('Valid?', form.valid); // true or false
     console.log('Search Text', form.value.text);
-    console.log(this.showService.search(form.value.text));
+    console.log(this.searchService.search(form.value.text));
   }
 
 

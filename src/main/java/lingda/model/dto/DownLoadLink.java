@@ -1,4 +1,6 @@
-package lingda.model;
+package lingda.model.dto;
+
+import lingda.model.pojo.TVShow;
 
 /**
  * Created by lingda on 24/03/2017.

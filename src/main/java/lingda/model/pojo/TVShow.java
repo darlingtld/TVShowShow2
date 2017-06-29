@@ -1,4 +1,4 @@
-package lingda.model;
+package lingda.model.pojo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
