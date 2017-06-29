@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {Tvshow} from '../model/tvshow';
+import {TvshowSearchResult} from '../model/tvshow-search-result';
 
 @Injectable()
 export class SearchService {
@@ -11,9 +11,9 @@ export class SearchService {
     this.searchUrl = 'search';
   }
 
-  search(term: string): Promise<Tvshow[]> {
+  search(term: string): Promise<TvshowSearchResult[]> {
     return this.http.post(this.searchUrl, {term: term}).toPromise()
-      .then(response => response.json().data as Tvshow[])
+      .then(response => response.json() as TvshowSearchResult[])
       .catch(this.handleError);
   }
 

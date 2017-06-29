@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Tvshow} from '../../model/tvshow';
+import {Component, Input, OnInit} from '@angular/core';
+import {TvshowSearchResult} from '../../model/tvshow-search-result';
 
 @Component({
   selector: 'app-search-result-detail',
@@ -8,7 +8,7 @@ import {Tvshow} from '../../model/tvshow';
 })
 export class SearchResultDetailComponent implements OnInit {
 
-  private tvshow: Tvshow;
+  @Input() tvshowSearchResult: TvshowSearchResult;
 
   constructor() {
   }

@@ -1,7 +1,3 @@
-<table class="table">
-  <tbody>
-  <tr *ngFor="let searchResult of searchResultList">
-    {{searchResult}}
-  </tr>
-  </tbody>
-</table>
+<app-search-result-detail *ngFor="let searchResult of tvshowSearchResultList | async"
+                          [tvshowSearchResult]="searchResult">
+</app-search-result-detail>

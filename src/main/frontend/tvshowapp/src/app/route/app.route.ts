@@ -4,15 +4,14 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {SearchFormComponent} from '../component/search-form/search-form.component';
+import {SearchResultComponent} from '../component/search-result/search-result.component';
 
 const routes: Routes = [
   {path: 'search', component: SearchFormComponent},
-  // { path: 'hero/:id',      component: HeroDetailComponent },
-  // {
-  //   path: 'heroes',
-  //   component: HeroListComponent,
-  //   data: { title: 'Heroes List' }
-  // },
+  {
+    path: 'search/:term',
+    component: SearchResultComponent,
+  },
   {
     path: '',
     redirectTo: '/search',

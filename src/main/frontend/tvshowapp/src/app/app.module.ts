@@ -10,6 +10,7 @@ import {ShowService} from './service/show.service';
 import {SearchResultTableComponent} from './component/search-result-table/search-result-table.component';
 import {SearchResultDetailComponent} from './component/search-result-detail/search-result-detail.component';
 import {SearchService} from './service/search.service';
+import { SearchResultComponent } from './component/search-result/search-result.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {SearchService} from './service/search.service';
     SearchFormComponent,
     HeaderComponent,
     SearchResultTableComponent,
-    SearchResultDetailComponent
+    SearchResultDetailComponent,
+    SearchResultComponent
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, AppRouteModule

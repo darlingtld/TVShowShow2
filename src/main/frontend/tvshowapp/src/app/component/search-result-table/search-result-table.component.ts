@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {TvshowSearchResult} from '../../model/tvshow-search-result';
 
 @Component({
   selector: 'app-search-result-table',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-result-table.component.css']
 })
 export class SearchResultTableComponent implements OnInit {
+
+  @Input() tvshowSearchResultList: TvshowSearchResult[];
 
   constructor() { }
 
