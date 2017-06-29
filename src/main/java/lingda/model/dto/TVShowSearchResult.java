@@ -11,10 +11,19 @@ public class TVShowSearchResult {
     private String tvSource;
     private Integer year;
     private String status;
+    private String category;
     private Integer season;
     private Integer episode;
     private String detailUrl;
     private String imgUrl;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getEnglishName() {
         return englishName;

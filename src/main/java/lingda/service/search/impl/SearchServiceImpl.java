@@ -27,8 +27,7 @@ public class SearchServiceImpl implements SearchService {
         logger.debug("search tv show with search term {}", searchTerm);
 //        get the search result list from meijutt
         List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijutt.search(searchTerm);
-//        for each show, populate the remaining fields
-        logger.info("showToUrlMap {}", tvShowSearchResultList);
-        return null;
+
+        return tvShowSearchResultList;
     }
 }

@@ -18,6 +18,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 /**
  * Created by lingda on 12/05/2017.
@@ -39,6 +41,11 @@ public class ShowCrawlerMeijuttImplTest {
         TVShowSearchResult result = tvShowSearchResultList.get(0);
         assertThat(result.getName(), startsWith("实习医生格蕾"));
         assertThat(result.getEnglishName(), startsWith("Grey‘s Anatomy"));
+        assertThat(result.getDetailUrl(), is(notNullValue()));
+        assertThat(result.getStatus(), is(notNullValue()));
+        assertThat(result.getTvSource(), is(notNullValue()));
+        assertThat(result.getYear(), is(greaterThan(2000)));
+        assertThat(result.getCategory(), is(notNullValue()));
     }
 
     @Test

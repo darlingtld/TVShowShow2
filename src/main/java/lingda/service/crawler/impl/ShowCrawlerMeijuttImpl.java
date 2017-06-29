@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,17 +36,17 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
     @Value("${site.meijutt.searchurl}")
     private String searchUrl;
 
-    //    the search is done by the source site, and no
+    //    the search is done by the source site, no need to filter again
     @Override
     public List<TVShowSearchResult> search(SearchTerm searchTerm) {
         Document doc = this.getDocument(searchTerm.getTerm());
-        return buildShowToUrlMap(doc, "");
+        return parseDocumentIntoSearchResultMatchingTerm(doc, "");
     }
 
     @Override
     protected List<TVShowSearchResult> searchShow(TVShow show) {
         Document doc = this.getDocument(show.getEnglishName());
-        return buildShowToUrlMap(doc, show.getEnglishName());
+        return parseDocumentIntoSearchResultMatchingTerm(doc, show.getEnglishName());
     }
 
     @Override
@@ -78,7 +77,8 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
     }
 
 
-    private List<TVShowSearchResult> buildShowToUrlMap(Document document, String term) {
+//    analyze the document and get the matching result into a list of TVShowSearchResult
+    private List<TVShowSearchResult> parseDocumentIntoSearchResultMatchingTerm(Document document, String term) {
         Elements elements = document.getElementsByClass("list_20");
         List<Element> matchingElements = elements.stream()
                 .filter(element ->
@@ -86,12 +86,17 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
                                 || removeIllegalString(element.getElementsByTag("li").get(1).text().toLowerCase()).contains(removeIllegalString(term.toLowerCase()))).collect(Collectors.toList());
         logger.debug("get elements matching term {}", matchingElements);
         List<TVShowSearchResult> searchResultList = new ArrayList<>();
+//        parse the elements into a TVShowSearchResult
         matchingElements.forEach(element -> {
             TVShowSearchResult searchResult = new TVShowSearchResult();
             Elements liElements = element.getElementsByTag("li");
             searchResult.setName(liElements.get(0).text());
             searchResult.setEnglishName(liElements.get(1).children().get(1).text());
             searchResult.setDetailUrl(this.site + liElements.get(0).getElementsByTag("a").attr("href"));
+            searchResult.setTvSource(liElements.get(2).children().get(1).text());
+            searchResult.setStatus(liElements.get(4).children().get(1).text());
+            searchResult.setYear(Integer.parseInt(liElements.get(5).children().get(1).text().substring(0,4)));
+            searchResult.setCategory(liElements.get(6).children().get(1).text());
             searchResultList.add(searchResult);
         });
         logger.debug("search result for {} is {}", term, matchingElements);
