@@ -1,0 +1,12 @@
+.name {
+  font-size: large;
+}
+
+.english-name {
+  font-size: small;
+  color: green;
+}
+
+.description {
+  font-size: small;
+}

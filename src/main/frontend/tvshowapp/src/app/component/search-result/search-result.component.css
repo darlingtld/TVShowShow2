@@ -10,3 +10,8 @@ div.search-bar {
 app-header {
   margin-right: 10px;
 }
+
+div.result-section {
+  width: 70%;
+  padding: 10px 0 0 50px;
+}

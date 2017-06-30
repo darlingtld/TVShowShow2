@@ -1,9 +1,17 @@
-<div *ngIf="tvshowSearchResult">
+<div class="search-result-detail" *ngIf="tvshowSearchResult">
   <span class="name">{{tvshowSearchResult.name}}</span>
-  <span class="badge badge-default">{{tvshowSearchResult.category}}</span>
-  <span class="badge badge-default">{{tvshowSearchResult.status}}</span>
-  <span class="badge badge-default">{{tvshowSearchResult.year}}</span>
-  <span class="badge badge-default">{{tvshowSearchResult.tvSource}}</span>
-  <span class="badge badge-default">{{tvshowSearchResult.category}}</span>
-  <p class="description">{{tvshowSearchResult.description}}</p>
+  <span class="badge badge-info">{{tvshowSearchResult.category}}</span>
+  <span class="badge badge-success">{{tvshowSearchResult.status}}</span>
+  <span class="badge badge-primary">{{tvshowSearchResult.year}}</span>
+  <span class="badge badge-warning">{{tvshowSearchResult.tvSource}}</span>
+  <div>
+    <span class="english-name">{{tvshowSearchResult.englishName}}</span>
+  </div>
+  <div>
+    <p class="description">
+      {{tvshowSearchResult.description.length > 300 ?
+      (tvshowSearchResult.description | slice:0:300) + '...'
+      : tvshowSearchResult.description}}
+    </p>
+  </div>
 </div>

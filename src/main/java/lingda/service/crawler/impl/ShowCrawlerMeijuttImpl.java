@@ -4,6 +4,7 @@ import lingda.model.dto.DownLoadLink;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
+import lingda.service.cache.DocumentHttpGetCache;
 import lingda.service.crawler.ShowCrawler;
 import lingda.util.NumericMapperUtil;
 import org.jsoup.Jsoup;
@@ -12,6 +13,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -38,16 +40,19 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
     @Value("${site.meijutt.searchurl}")
     private String searchUrl;
 
+    @Autowired
+    private DocumentHttpGetCache documentHttpGetCache;
+
     //    the search is done by the source site, no need to filter again
     @Override
     public List<TVShowSearchResult> search(SearchTerm searchTerm) {
-        Document doc = this.getDocument(removeBadCharacter(searchTerm.getTerm()));
+        Document doc = this.searchDocumentUsingHttpPost(removeBadCharacter(searchTerm.getTerm()));
         return parseDocumentIntoSearchResultMatchingTerm(doc, "");
     }
 
     @Override
     protected List<TVShowSearchResult> searchShow(TVShow show) {
-        Document doc = this.getDocument(removeBadCharacter(show.getName()));
+        Document doc = this.searchDocumentUsingHttpPost(removeBadCharacter(show.getName()));
         return parseDocumentIntoSearchResultMatchingTerm(doc, show.getName());
     }
 
@@ -94,15 +99,27 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
             Elements liElements = element.getElementsByTag("li");
             searchResult.setName(liElements.get(0).text());
             searchResult.setEnglishName(liElements.get(1).children().get(1).text());
-            searchResult.setDetailUrl(this.site + liElements.get(0).getElementsByTag("a").attr("href"));
+            String detailUrl = this.site + liElements.get(0).getElementsByTag("a").attr("href");
+            searchResult.setDetailUrl(detailUrl);
             searchResult.setTvSource(liElements.get(2).children().get(1).text());
             searchResult.setStatus(liElements.get(4).children().get(1).text());
             searchResult.setYear(Integer.parseInt(liElements.get(5).children().get(1).text().substring(0, 4)));
             searchResult.setCategory(liElements.get(6).children().get(1).text());
+            searchResult.setDescription(fetchDescriptionForTheShow(detailUrl));
             searchResultList.add(searchResult);
         });
         logger.debug("search result for {} is {}", term, matchingElements);
         return searchResultList;
+    }
+
+    private String fetchDescriptionForTheShow(String detailUrl) {
+        try {
+            Document doc = documentHttpGetCache.get(detailUrl);
+            return doc.getElementsByClass("des").text();
+        } catch (Exception e) {
+            logger.error("failed to fetch the description from {}.  cause is {}", detailUrl, e.getMessage(), e);
+        }
+        return "";
     }
 
     private String removeIllegalString(String name) {
@@ -116,7 +133,7 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
         return String.join(" ", elems);
     }
 
-    private Document getDocument(String searchText) {
+    private Document searchDocumentUsingHttpPost(String searchText) {
         try {
             return Jsoup.connect(searchUrl)
                     .header("Content-Type", "application/x-www-form-urlencoded")
