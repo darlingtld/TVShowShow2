@@ -27,4 +27,19 @@ public class SearchTerm {
                 "term='" + term + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SearchTerm)) return false;
+
+        SearchTerm that = (SearchTerm) o;
+
+        return getTerm() != null ? getTerm().equals(that.getTerm()) : that.getTerm() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getTerm() != null ? getTerm().hashCode() : 0;
+    }
 }

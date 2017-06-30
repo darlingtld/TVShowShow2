@@ -25,7 +25,7 @@ export class SearchFormComponent implements OnInit {
   }
 
   gotoSearchResult(term: string) {
-    const link = ['/search', term];
+    const link = ['/search', {term: term}];
     this.router.navigate(link);
   }
 }

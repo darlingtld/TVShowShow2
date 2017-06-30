@@ -7,14 +7,14 @@ import {SearchResultComponent} from '../component/search-result/search-result.co
 import {EntranceComponent} from '../component/entrance/entrance.component';
 
 const routes: Routes = [
-  {path: 'search', component: EntranceComponent},
+  {path: 'index', component: EntranceComponent},
   {
-    path: 'search/:term',
+    path: 'search',
     component: SearchResultComponent,
   },
   {
     path: '',
-    redirectTo: '/search',
+    redirectTo: '/index',
     pathMatch: 'full'
   },
   {path: '**', component: EntranceComponent}
