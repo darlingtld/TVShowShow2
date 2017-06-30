@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static lingda.util.CharacterUtil.removeBadCharacter;
+
 /**
  * Created by lingda on 11/11/16.
  */
@@ -39,14 +41,14 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
     //    the search is done by the source site, no need to filter again
     @Override
     public List<TVShowSearchResult> search(SearchTerm searchTerm) {
-        Document doc = this.getDocument(searchTerm.getTerm());
+        Document doc = this.getDocument(removeBadCharacter(searchTerm.getTerm()));
         return parseDocumentIntoSearchResultMatchingTerm(doc, "");
     }
 
     @Override
     protected List<TVShowSearchResult> searchShow(TVShow show) {
-        Document doc = this.getDocument(show.getEnglishName());
-        return parseDocumentIntoSearchResultMatchingTerm(doc, show.getEnglishName());
+        Document doc = this.getDocument(removeBadCharacter(show.getName()));
+        return parseDocumentIntoSearchResultMatchingTerm(doc, show.getName());
     }
 
     @Override
@@ -77,7 +79,7 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
     }
 
 
-//    analyze the document and get the matching result into a list of TVShowSearchResult
+    //    analyze the document and get the matching result into a list of TVShowSearchResult
     private List<TVShowSearchResult> parseDocumentIntoSearchResultMatchingTerm(Document document, String term) {
         Elements elements = document.getElementsByClass("list_20");
         List<Element> matchingElements = elements.stream()
@@ -95,7 +97,7 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
             searchResult.setDetailUrl(this.site + liElements.get(0).getElementsByTag("a").attr("href"));
             searchResult.setTvSource(liElements.get(2).children().get(1).text());
             searchResult.setStatus(liElements.get(4).children().get(1).text());
-            searchResult.setYear(Integer.parseInt(liElements.get(5).children().get(1).text().substring(0,4)));
+            searchResult.setYear(Integer.parseInt(liElements.get(5).children().get(1).text().substring(0, 4)));
             searchResult.setCategory(liElements.get(6).children().get(1).text());
             searchResultList.add(searchResult);
         });

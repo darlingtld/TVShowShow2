@@ -10,6 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +37,22 @@ public class ShowCrawlerMeijuttImplTest {
 
     @Test
     public void shouldGetSomethingFromSearchShow() {
-        List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijuttImpl.searchShow(new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
+        List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijuttImpl.searchShow(new TVShow(null, "实习医生格蕾", "实习医生格蕾", "", 1, 1));
+        assertThat(tvShowSearchResultList, not(IsEmptyCollection.empty()));
+//        check the first item
+        TVShowSearchResult result = tvShowSearchResultList.get(0);
+        assertThat(result.getName(), startsWith("实习医生格蕾"));
+        assertThat(result.getEnglishName(), startsWith("Grey‘s Anatomy"));
+        assertThat(result.getDetailUrl(), is(notNullValue()));
+        assertThat(result.getStatus(), is(notNullValue()));
+        assertThat(result.getTvSource(), is(notNullValue()));
+        assertThat(result.getYear(), is(greaterThan(2000)));
+        assertThat(result.getCategory(), is(notNullValue()));
+    }
+
+    @Test
+    public void shouldGetSomethingFromSearchUsingChinese() throws UnsupportedEncodingException {
+        List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijuttImpl.searchShow(new TVShow(null, "Grey's Anatomy", "Grey's Anatomy", "", 1, 1));
         tvShowSearchResultList.forEach(System.out::println);
         assertThat(tvShowSearchResultList, not(IsEmptyCollection.empty()));
 //        check the first item
@@ -51,11 +69,5 @@ public class ShowCrawlerMeijuttImplTest {
     @Test
     public void shouldGetDownloadLinks() {
         showCrawlerMeijuttImpl.getDownloadLinks(new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
-    }
-
-    @Test
-    public void test() {
-        Optional<String> stringOptional = Optional.ofNullable("hi");
-        System.out.println(stringOptional.flatMap(s -> Optional.of(s.toUpperCase())));
     }
 }
