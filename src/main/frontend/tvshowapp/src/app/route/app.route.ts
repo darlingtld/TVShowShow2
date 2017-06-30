@@ -3,11 +3,11 @@
  */
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {SearchFormComponent} from '../component/search-form/search-form.component';
 import {SearchResultComponent} from '../component/search-result/search-result.component';
+import {EntranceComponent} from '../component/entrance/entrance.component';
 
 const routes: Routes = [
-  {path: 'search', component: SearchFormComponent},
+  {path: 'search', component: EntranceComponent},
   {
     path: 'search/:term',
     component: SearchResultComponent,
@@ -17,7 +17,7 @@ const routes: Routes = [
     redirectTo: '/search',
     pathMatch: 'full'
   },
-  {path: '**', component: SearchFormComponent}
+  {path: '**', component: EntranceComponent}
 ];
 
 @NgModule({

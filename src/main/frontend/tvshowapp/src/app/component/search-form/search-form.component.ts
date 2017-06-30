@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder} from '@angular/forms';
-import {SearchService} from '../../service/search.service';
-import {TvshowSearchResult} from '../../model/tvshow-search-result';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-search-form',
@@ -11,28 +10,22 @@ import {TvshowSearchResult} from '../../model/tvshow-search-result';
 export class SearchFormComponent implements OnInit {
 
   searchForm: FormGroup;
-  isLoading: boolean;
-  tvshowSearchResultList: TvshowSearchResult[];
 
-  constructor(private formBuilder: FormBuilder, private searchService: SearchService) {
-    this.isLoading = false;
+  constructor(private formBuilder: FormBuilder, private router: Router) {
   }
 
   ngOnInit() {
     this.searchForm = this.formBuilder.group({
-      text: ''
+      text: ['', [Validators.required, Validators.minLength(1)]],
     });
   }
 
   onSubmit(form: FormGroup) {
-    this.isLoading = true;
-    console.log('Valid?', form.valid); // true or false
-    console.log('Search Text', form.value.text);
-    // this.tvshowSearchResultList = this.searchService.search(form.value.text);
-    this.searchService.search(form.value.text).then((result) => {
-      this.tvshowSearchResultList = result;
-      console.log(this.tvshowSearchResultList);
-      this.isLoading = false;
-    });
+    this.gotoSearchResult(form.value.text);
+  }
+
+  gotoSearchResult(term: string) {
+    const link = ['/search', term];
+    this.router.navigate(link);
   }
 }

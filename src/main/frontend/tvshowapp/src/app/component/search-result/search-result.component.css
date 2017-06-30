@@ -1,0 +1,12 @@
+div.header {
+  background-color: #fafafa;
+}
+
+div.search-bar {
+  display: flex;
+  padding: 30px;
+}
+
+app-header {
+  margin-right: 10px;
+}

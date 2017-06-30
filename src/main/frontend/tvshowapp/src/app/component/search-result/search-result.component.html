@@ -1,2 +1,13 @@
-<app-search-form></app-search-form>
-<app-search-result-table [tvshowSearchResultList]="tvshowSearchResultList"></app-search-result-table>
+<div class="header">
+  <div class="search-bar">
+    <app-header></app-header>
+    <app-search-form></app-search-form>
+  </div>
+</div>
+<div class="result-section">
+  <app-search-result-table [tvshowSearchResultList]="tvshowSearchResultList"></app-search-result-table>
+</div>
+
+<div class="text-center">
+  <p class="lead" *ngIf="isLoading">Loading...</p>
+</div>
