@@ -86,7 +86,7 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
 
     //    analyze the document and get the matching result into a list of TVShowSearchResult
     private List<TVShowSearchResult> parseDocumentIntoSearchResultMatchingTerm(Document document, String term) {
-        Elements elements = document.getElementsByClass("list_20");
+        Elements elements = document.getElementsByClass("cn_box2");
         List<Element> matchingElements = elements.stream()
                 .filter(element ->
                         removeIllegalString(element.getElementsByTag("li").get(0).text().toLowerCase()).contains(removeIllegalString(term.toLowerCase()))
@@ -95,10 +95,12 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
         List<TVShowSearchResult> searchResultList = new ArrayList<>();
 //        parse the elements into a TVShowSearchResult
         matchingElements.forEach(element -> {
+            Element picElement = element.getElementsByClass("cn_box_box3").get(0);
             TVShowSearchResult searchResult = new TVShowSearchResult();
-            Elements liElements = element.getElementsByTag("li");
+            Elements liElements = element.getElementsByClass("list_20").get(0).getElementsByTag("li");
             searchResult.setName(liElements.get(0).text());
             searchResult.setEnglishName(liElements.get(1).children().get(1).text());
+            searchResult.setImgUrl(picElement.getElementsByTag("img").attr("src"));
             String detailUrl = this.site + liElements.get(0).getElementsByTag("a").attr("href");
             searchResult.setDetailUrl(detailUrl);
             searchResult.setTvSource(liElements.get(2).children().get(1).text());

@@ -43,6 +43,7 @@ public class ShowCrawlerMeijuttImplTest {
         TVShowSearchResult result = tvShowSearchResultList.get(0);
         assertThat(result.getName(), startsWith("实习医生格蕾"));
         assertThat(result.getEnglishName(), startsWith("Grey‘s Anatomy"));
+        assertThat(result.getImgUrl(), is(notNullValue()));
         assertThat(result.getDetailUrl(), is(notNullValue()));
         assertThat(result.getStatus(), is(notNullValue()));
         assertThat(result.getTvSource(), is(notNullValue()));

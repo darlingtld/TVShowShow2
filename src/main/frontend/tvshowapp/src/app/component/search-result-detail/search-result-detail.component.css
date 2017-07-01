@@ -17,4 +17,17 @@
 
 .operation {
   font-size: small;
+  margin-left: 110px;
+}
+
+.search-result-main-section {
+  display: flex;
+}
+
+.search-result-pic{
+  margin-right: 10px;
+}
+.search-result-pic > img {
+  width: 100px;
+  height: 140px;
 }
