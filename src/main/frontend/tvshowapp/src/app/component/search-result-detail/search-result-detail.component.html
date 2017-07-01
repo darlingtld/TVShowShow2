@@ -1,7 +1,7 @@
 <div class="search-result-detail" *ngIf="tvshowSearchResult">
   <div class="search-result-main-section">
     <div class="search-result-pic">
-      <img src="{{tvshowSearchResult.imgUrl}}">
+      <img [src]="tvshowSearchResult.imgUrl" [appDefaultImg]="'search-result-detail-default-pic.jpg'"/>
     </div>
     <div class="search-result-info">
       <span class="name">{{tvshowSearchResult.name}}</span>

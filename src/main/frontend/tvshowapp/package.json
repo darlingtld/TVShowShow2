@@ -8,7 +8,7 @@
     "build": "ng build",
     "postbuild": "npm run deploy",
     "predeploy": "rimraf ../../resources/static/ && mkdirp ../../resources/static",
-    "deploy": "copyfiles -f dist/** ../../resources/static",
+    "deploy": "copyfiles -f dist/** ../../resources/static && copyfiles -f dist/assets/** ../../resources/static/assets",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

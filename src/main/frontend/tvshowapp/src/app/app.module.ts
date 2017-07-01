@@ -12,6 +12,7 @@ import {SearchResultDetailComponent} from './component/search-result-detail/sear
 import {SearchService} from './service/search.service';
 import { SearchResultComponent } from './component/search-result/search-result.component';
 import { EntranceComponent } from './component/entrance/entrance.component';
+import { DefaultImgDirective } from './directive/default-img.directive';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { EntranceComponent } from './component/entrance/entrance.component';
     SearchResultTableComponent,
     SearchResultDetailComponent,
     SearchResultComponent,
-    EntranceComponent
+    EntranceComponent,
+    DefaultImgDirective,
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, AppRouteModule

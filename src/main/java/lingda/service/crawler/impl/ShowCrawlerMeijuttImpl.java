@@ -117,7 +117,7 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
     private String fetchDescriptionForTheShow(String detailUrl) {
         try {
             Document doc = documentHttpGetCache.get(detailUrl);
-            return doc.getElementsByClass("des").text();
+            return doc.getElementsByClass("des").text().trim();
         } catch (Exception e) {
             logger.error("failed to fetch the description from {}.  cause is {}", detailUrl, e.getMessage(), e);
         }
