@@ -4,12 +4,12 @@ import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.service.cache.SearchResultCache;
 import lingda.service.search.SearchService;
+import lingda.util.StringSimilarityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,7 +29,28 @@ public class SearchServiceImpl implements SearchService {
         logger.debug("search tv show with search term {}", searchTerm);
 //        get the search result list from meijutt
         List<TVShowSearchResult> tvShowSearchResultList = searchResultCache.get(searchTerm);
-        tvShowSearchResultList.sort(Comparator.comparing(TVShowSearchResult::getYear).reversed());
+        tvShowSearchResultList.sort(searchResultComparator(searchTerm));
         return tvShowSearchResultList;
+    }
+
+    protected Comparator<TVShowSearchResult> searchResultComparator(SearchTerm searchTerm) {
+        return (o1, o2) -> {
+            double o1Sim = StringSimilarityUtil.sim(o1.getName().toLowerCase(), searchTerm.getTerm().toLowerCase()) + StringSimilarityUtil.sim(o1.getEnglishName().toLowerCase(), searchTerm.getTerm().toLowerCase());
+            double o2Sim = StringSimilarityUtil.sim(o2.getName().toLowerCase(), searchTerm.getTerm().toLowerCase()) + StringSimilarityUtil.sim(o1.getEnglishName().toLowerCase(), searchTerm.getTerm().toLowerCase());
+            if ((o1.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o1.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))
+                    && !(o2.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o2.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))) {
+                return -1;
+            } else if (!(o1.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o1.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))
+                    && (o2.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o2.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))) {
+                return 1;
+            } else {
+                if (o1Sim == o2Sim) {
+                    return o2.getYear() - o1.getYear();
+                } else {
+                    return o2Sim > o1Sim ? 1 : -1;
+                }
+            }
+
+        };
     }
 }
