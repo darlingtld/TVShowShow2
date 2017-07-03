@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-search-form',
@@ -11,12 +11,15 @@ export class SearchFormComponent implements OnInit {
 
   searchForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.searchForm = this.formBuilder.group({
       text: ['', [Validators.required, Validators.minLength(1)]],
+    });
+    this.route.params.subscribe(params => {
+      this.searchForm.setValue({text: params['term']});
     });
   }
 
