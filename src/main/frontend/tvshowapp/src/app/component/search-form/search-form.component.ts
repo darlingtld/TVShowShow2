@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -19,7 +19,9 @@ export class SearchFormComponent implements OnInit {
       text: ['', [Validators.required, Validators.minLength(1)]],
     });
     this.route.params.subscribe(params => {
-      this.searchForm.setValue({text: params['term']});
+      if (params['term']) {
+        this.searchForm.setValue({text: params['term']});
+      }
     });
   }
 

@@ -13,6 +13,7 @@ import {SearchService} from './service/search.service';
 import { SearchResultComponent } from './component/search-result/search-result.component';
 import { EntranceComponent } from './component/entrance/entrance.component';
 import { DefaultImgDirective } from './directive/default-img.directive';
+import { CategoryNavbarComponent } from './component/category-navbar/category-navbar.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { DefaultImgDirective } from './directive/default-img.directive';
     SearchResultComponent,
     EntranceComponent,
     DefaultImgDirective,
+    CategoryNavbarComponent,
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, AppRouteModule

@@ -17,59 +17,36 @@ import java.util.Optional;
 /**
  * Created by lingda on 11/11/16.
  */
-public abstract class ShowCrawler {
-
-    private static final Logger logger = LoggerFactory.getLogger(ShowCrawler.class);
+public interface ShowCrawler {
 
     /**
-     *
      * @param searchTerm the search term
      * @return a map containing the show name and the url, null if nothing is found
      */
-    public abstract List<TVShowSearchResult> search(SearchTerm searchTerm);
+    List<TVShowSearchResult> search(SearchTerm searchTerm);
 
     /**
      * @param show the latest show that is now being watched
      * @return a map containing the show name and the url, null if nothing is found
      */
-    protected abstract List<TVShowSearchResult> searchShow(TVShow show);
+    List<TVShowSearchResult> searchShow(TVShow show);
 
     /**
      * get all the download links matching the url
+     *
      * @param showUrl
      * @param show
      * @return all the download links matching the url
      */
-    protected abstract List<DownLoadLink> findDownloadLinks(String showUrl, TVShow show);
-
-    /**
-     * get the download links that the user is gonna watch next.  filter out the already watched shows
-     * @param downLoadLinkList
-     * @param show
-     * @return get the next shows waiting to be watched
-     */
-    protected abstract List<DownLoadLink> getMatchedDownloadLinksForWatching(List<DownLoadLink> downLoadLinkList, TVShow show);
+    List<DownLoadLink> searchDownloadLinks(String showUrl, TVShow show);
 
     /**
      * find the reasonable show url
+     *
      * @param show
      * @param showToUrlMap
      * @return
      */
-    protected abstract Optional<String> findMatchedShowUrl(TVShow show, List<TVShowSearchResult> showToUrlMap);
-
-    public List<DownLoadLink> getDownloadLinks(TVShow show) {
-
-        List<TVShowSearchResult> showToUrlMap = searchShow(show);
-
-        if (Objects.nonNull(showToUrlMap)) {
-            List<DownLoadLink> downLoadLinkList = new ArrayList<>();
-            Optional<String> showUrl = findMatchedShowUrl(show, showToUrlMap);
-            showUrl.ifPresent(s -> downLoadLinkList.addAll(findDownloadLinks(s, show)));
-            return getMatchedDownloadLinksForWatching(downLoadLinkList, show);
-        } else {
-            return Collections.emptyList();
-        }
-    }
+    Optional<String> findMatchedShowUrl(TVShow show, List<TVShowSearchResult> showToUrlMap);
 
 }

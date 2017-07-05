@@ -30,7 +30,7 @@ import static lingda.util.CharacterUtil.removeBadCharacter;
  * Created by lingda on 11/11/16.
  */
 @Service
-public class ShowCrawlerMeijuttImpl extends ShowCrawler {
+public class ShowCrawlerMeijuttImpl implements ShowCrawler {
 
     private static final Logger logger = LoggerFactory.getLogger(ShowCrawlerMeijuttImpl.class);
 
@@ -45,19 +45,19 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
 
     //    the search is done by the source site, no need to filter again
     @Override
-    public List<TVShowSearchResult> search(SearchTerm searchTerm) {
+    public List<TVShowSearchResult> search(final SearchTerm searchTerm) {
         Document doc = this.searchDocumentUsingHttpPost(removeBadCharacter(searchTerm.getTerm()));
         return parseDocumentIntoSearchResultMatchingTerm(doc, "");
     }
 
     @Override
-    protected List<TVShowSearchResult> searchShow(TVShow show) {
+    public List<TVShowSearchResult> searchShow(final TVShow show) {
         Document doc = this.searchDocumentUsingHttpPost(removeBadCharacter(show.getName()));
         return parseDocumentIntoSearchResultMatchingTerm(doc, show.getName());
     }
 
     @Override
-    protected List<DownLoadLink> findDownloadLinks(final String showUrl, final TVShow show) {
+    public List<DownLoadLink> searchDownloadLinks(final String showUrl, final TVShow show) {
         try {
             Document doc = Jsoup.connect(site + showUrl).get();
             Elements elements = doc.getElementsByAttributeValue("class", "down_url");
@@ -70,19 +70,13 @@ public class ShowCrawlerMeijuttImpl extends ShowCrawler {
     }
 
     @Override
-    protected List<DownLoadLink> getMatchedDownloadLinksForWatching(List<DownLoadLink> downLoadLinkList, TVShow show) {
-        return null;
-    }
-
-    @Override
-    protected Optional<String> findMatchedShowUrl(TVShow show, List<TVShowSearchResult> tvShowSearchResultList) {
+    public Optional<String> findMatchedShowUrl(final TVShow show, List<TVShowSearchResult> tvShowSearchResultList) {
         Optional<TVShowSearchResult> tvShowSearchResultOptional = tvShowSearchResultList.stream()
                 .filter(result -> result.getName().contains(String.format("第%s季", NumericMapperUtil.getChineseNumber(show.getSeason()))))
                 .findFirst();
 
         return tvShowSearchResultOptional.flatMap(tvShowSearchResult -> Optional.ofNullable(tvShowSearchResult.getDetailUrl()));
     }
-
 
     //    analyze the document and get the matching result into a list of TVShowSearchResult
     private List<TVShowSearchResult> parseDocumentIntoSearchResultMatchingTerm(Document document, String term) {
