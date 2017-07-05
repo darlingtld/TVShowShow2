@@ -13,7 +13,7 @@ const routes: Routes = [
     path: 'search',
     component: SearchResultComponent,
     children: [
-      {path: '', component: SearchResultTableComponent},
+      {path: '', redirectTo: 'show', pathMatch: 'full'},
       {path: 'show', component: SearchResultTableComponent},
       {path: 'movie', component: SearchResultTableComponent},
       {path: 'variety', component: SearchResultTableComponent}

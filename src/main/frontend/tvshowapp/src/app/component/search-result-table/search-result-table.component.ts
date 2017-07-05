@@ -14,14 +14,18 @@ import 'rxjs/add/operator/do';
 })
 export class SearchResultTableComponent implements OnInit {
 
+  isLoading: boolean;
   searchResultList: Observable<TvshowSearchResult[]>;
 
   constructor(private searchService: SearchService, private route: ActivatedRoute) {
+    this.isLoading = true;
   }
 
   ngOnInit() {
     this.searchResultList = this.route.queryParamMap
+      .do(() => this.isLoading = true)
       .map((paramMap: ParamMap) => paramMap.get('term'))
-      .switchMap((term: string) => this.searchService.search(term));
+      .switchMap((term: string) => this.searchService.search(term))
+      .do(() => {this.isLoading = false});
   }
 }
