@@ -1,13 +1,7 @@
-<!--<app-search-result-detail *ngFor="let searchResult of searchResultList | async;let searchResultItems"-->
-<!--[tvshowSearchResult]="searchResult">-->
-<!--</app-search-result-detail>-->
-<!--<div class="loader" *ngIf="isLoading">Loading...</div>-->
-<!--<div *ngIf="searchResultItems.length==0">No records found.</div>-->
-
 <ng-container *ngIf="searchResultList |async; let searchResultItems">
+  <div class="loader" *ngIf="isLoading">Loading...</div>
   <app-search-result-detail *ngFor="let searchResult of searchResultItems"
                             [tvshowSearchResult]="searchResult">
   </app-search-result-detail>
-  <div class="loader" *ngIf="isLoading">Loading...</div>
-  <div class="empty-result-indicator" *ngIf="searchResultItems.length==0">No results found.  Try use another search string</div>
+  <div class="empty-result-indicator" *ngIf="!isLoading && searchResultItems.length==0">No results found.  Try use another search string</div>
 </ng-container>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,9 +22,19 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
-    @PostMapping()
+    @PostMapping({"", "/show"})
     public List<TVShowSearchResult> searchTVShow(@RequestBody SearchTerm searchTerm) {
         return searchService.searchTVShow(searchTerm);
+    }
+
+    @PostMapping("/movie")
+    public List<TVShowSearchResult> searchMovie(@RequestBody SearchTerm searchTerm) {
+        return Collections.emptyList();
+    }
+
+    @PostMapping("/variety")
+    public List<TVShowSearchResult> searchVariety(@RequestBody SearchTerm searchTerm) {
+        return Collections.emptyList();
     }
 
 }
