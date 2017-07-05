@@ -18,7 +18,7 @@ export class SearchFormComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       text: ['', [Validators.required, Validators.minLength(1)]],
     });
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       if (params['term']) {
         this.searchForm.setValue({text: params['term']});
       }
@@ -30,7 +30,7 @@ export class SearchFormComponent implements OnInit {
   }
 
   gotoSearchResult(term: string) {
-    const link = ['/search', {term: term}];
-    this.router.navigate(link);
+    const link = ['/search'];
+    this.router.navigate(link, {queryParams: {term: term}});
   }
 }

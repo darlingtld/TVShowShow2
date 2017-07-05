@@ -5,16 +5,16 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">美剧</a>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" [routerLink]="['/search/show']" queryParamsHandling="merge">美剧</a>
         <span></span>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">电影</a>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" [routerLink]="['/search/movie']" queryParamsHandling="merge">电影</a>
         <span></span>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">综艺</a>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" [routerLink]="['/search/variety']" queryParamsHandling="merge">综艺</a>
         <span></span>
       </li>
     </ul>

@@ -13,12 +13,6 @@ export class SearchService {
     this.searchUrl = 'search';
   }
 
-  // search(term: string): Promise<TvshowSearchResult[]> {
-  //   return this.http.post(this.searchUrl, {term: term}).toPromise()
-  //     .then(response => response.json() as TvshowSearchResult[])
-  //     .catch(this.handleError);
-  // }
-
   search(term: string): Observable<TvshowSearchResult[]> {
     return this.http.post(this.searchUrl, {term: term})
       .map(response => response.json() as TvshowSearchResult[])

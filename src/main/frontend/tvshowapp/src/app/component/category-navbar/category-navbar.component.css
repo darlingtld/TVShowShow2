@@ -1,6 +1,7 @@
 :host nav {
   background-color: #fafafa;
   margin-left: 200px;
+  padding-bottom: 4px;
 }
 
 .navbar-custom .nav-item.active .nav-link,
@@ -27,7 +28,7 @@ li a {
   padding: 10px;
 }
 
-span {
+li.nav-item.active span {
   display: block;
   width: calc(100% - 6px);
   height: 4px;
