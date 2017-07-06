@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Tvshow} from '../model/tvshow';
-import {Observable} from "rxjs/Observable";
-import {Downloadlink} from "../model/downloadlink";
+import {Observable} from 'rxjs/Observable';
+import {Downloadlink} from '../model/downloadlink';
 
 @Injectable()
 export class ShowService {
