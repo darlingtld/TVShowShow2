@@ -6,6 +6,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {SearchResultComponent} from '../component/search-result/search-result.component';
 import {EntranceComponent} from '../component/entrance/entrance.component';
 import {SearchResultTableComponent} from "../component/search-result-table/search-result-table.component";
+import {DownloadSectionComponent} from "../component/download-section/download-section.component";
 
 const routes: Routes = [
   {path: 'index', component: EntranceComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
       {path: 'variety', component: SearchResultTableComponent}
     ]
   },
+  {path: 'show/downloadlinks', component: DownloadSectionComponent},
   {
     path: '',
     redirectTo: '/index',

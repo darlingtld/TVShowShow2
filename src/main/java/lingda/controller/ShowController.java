@@ -2,17 +2,14 @@ package lingda.controller;
 
 import lingda.model.dto.DownLoadLink;
 import lingda.model.dto.TVShowDTO;
-import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
 import lingda.service.crawler.ShowCrawler;
 import lingda.service.manager.ShowManager;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -38,6 +35,6 @@ public class ShowController {
     @PostMapping("/downloadlinks")
     public List<DownLoadLink> getDownloadLinks(@RequestBody TVShowDTO showDTO) {
         TVShow tvShow = new TVShow(null, showDTO.getName(), showDTO.getEnglishName(), showDTO.getDescription(), showDTO.getSeason(), showDTO.getEpisode());
-        return meijuttShowCrawler.searchDownloadLinks(showDTO.getUrl(), tvShow);
+        return meijuttShowCrawler.searchDownloadLinks(showDTO.getDetailUrl(), tvShow);
     }
 }

@@ -23,7 +23,6 @@ export class SearchResultTableComponent implements OnInit {
 
   ngOnInit() {
     this.searchResultList = this.route.queryParamMap
-      // .do(() => this.searchResultList = null)
       .do(() => this.isLoading = true)
       .map((paramMap: ParamMap) => paramMap.get('term'))
       .switchMap((term: string) => this.searchService.search(term))

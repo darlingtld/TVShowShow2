@@ -14,6 +14,8 @@ import { SearchResultComponent } from './component/search-result/search-result.c
 import { EntranceComponent } from './component/entrance/entrance.component';
 import { DefaultImgDirective } from './directive/default-img.directive';
 import { CategoryNavbarComponent } from './component/category-navbar/category-navbar.component';
+import { DownloadSectionComponent } from './component/download-section/download-section.component';
+import { DownloadLinkComponent } from './component/download-link/download-link.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { CategoryNavbarComponent } from './component/category-navbar/category-na
     EntranceComponent,
     DefaultImgDirective,
     CategoryNavbarComponent,
+    DownloadSectionComponent,
+    DownloadLinkComponent,
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, AppRouteModule

@@ -22,8 +22,8 @@
     </div>
   </div>
   <div class="operation">
-    <a [routerLink]="['tracks']">下载链接</a>
-    <a [routerLink]="['tracks']">在线观看</a>
+    <a [routerLink]="['/show', 'downloadlinks']" [queryParams]="{ detailUrl: tvshowSearchResult.detailUrl }">下载链接</a>
+    <a [routerLink]="['/show', 'downloadlinks']" [queryParams]="{ detailUrl: tvshowSearchResult.detailUrl }">在线观看</a>
     <a [routerLink]="['tracks']">收藏</a>
   </div>
 </div>

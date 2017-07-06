@@ -6,15 +6,18 @@ public class TVShowDTO {
     private String description;
     private Integer season;
     private Integer episode;
-    private String url;
+    private String detailUrl;
 
-    public TVShowDTO(String name, String englishName, String description, Integer season, Integer episode, String url) {
+    public TVShowDTO() {
+    }
+
+    public TVShowDTO(String name, String englishName, String description, Integer season, Integer episode, String detailUrl) {
         this.name = name;
         this.englishName = englishName;
         this.description = description;
         this.season = season;
         this.episode = episode;
-        this.url = url;
+        this.detailUrl = detailUrl;
     }
 
     public String getName() {
@@ -57,12 +60,12 @@ public class TVShowDTO {
         this.episode = episode;
     }
 
-    public String getUrl() {
-        return url;
+    public String getDetailUrl() {
+        return detailUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setDetailUrl(String detailUrl) {
+        this.detailUrl = detailUrl;
     }
 
     @Override
@@ -73,7 +76,7 @@ public class TVShowDTO {
                 ", description='" + description + '\'' +
                 ", season=" + season +
                 ", episode=" + episode +
-                ", url='" + url + '\'' +
+                ", detailUrl='" + detailUrl + '\'' +
                 '}';
     }
 }

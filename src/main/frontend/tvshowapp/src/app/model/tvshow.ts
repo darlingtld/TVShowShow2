@@ -7,4 +7,10 @@ export class Tvshow {
   englishName: string;
   season: number;
   episode: number;
+  detailUrl: string;
+
+
+  constructor(detailUrl: string) {
+    this.detailUrl = detailUrl;
+  }
 }

@@ -1,5 +1,6 @@
 package lingda.service.crawler.impl;
 
+import lingda.model.dto.DownLoadLink;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
 import org.hamcrest.collection.IsEmptyCollection;
@@ -37,7 +38,7 @@ public class ShowCrawlerMeijuttImplTest {
 
     @Test
     public void shouldGetSomethingFromSearchShow() {
-        List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijuttImpl.searchShow(new TVShow(null, "实习医生格蕾", "实习医生格蕾", "", 1, 1));
+        List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijuttImpl.searchShow(new TVShow(null, "Grey's Anatomy", "Grey's Anatomy", "", 1, 1));
         assertThat(tvShowSearchResultList, not(IsEmptyCollection.empty()));
 //        check the first item
         TVShowSearchResult result = tvShowSearchResultList.get(0);
@@ -53,7 +54,7 @@ public class ShowCrawlerMeijuttImplTest {
 
     @Test
     public void shouldGetSomethingFromSearchUsingChinese() throws UnsupportedEncodingException {
-        List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijuttImpl.searchShow(new TVShow(null, "Grey's Anatomy", "Grey's Anatomy", "", 1, 1));
+        List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijuttImpl.searchShow(new TVShow(null, "实习医生格蕾", "实习医生格蕾", "", 1, 1));
         tvShowSearchResultList.forEach(System.out::println);
         assertThat(tvShowSearchResultList, not(IsEmptyCollection.empty()));
 //        check the first item
@@ -69,6 +70,7 @@ public class ShowCrawlerMeijuttImplTest {
 
     @Test
     public void shouldGetDownloadLinks() {
-        showCrawlerMeijuttImpl.getDownloadLinks(new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
+        List<DownLoadLink> downloadLinkList = showCrawlerMeijuttImpl.searchDownloadLinks("http://www.meijutt.com/content/meiju131.html", new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
+        downloadLinkList.forEach(System.out::println);
     }
 }
