@@ -12,12 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -70,7 +66,7 @@ public class ShowCrawlerMeijuttImplTest {
 
     @Test
     public void shouldGetDownloadLinks() {
-        List<DownLoadLink> downloadLinkList = showCrawlerMeijuttImpl.searchDownloadLinks("http://www.meijutt.com/content/meiju131.html", new TVShow(null, "实习医生格蕾", "Grey's Anatomy", "", 1, 1));
+        List<DownLoadLink> downloadLinkList = showCrawlerMeijuttImpl.searchDownloadLinks("http://www.meijutt.com/content/meiju131.html");
         downloadLinkList.forEach(System.out::println);
     }
 }

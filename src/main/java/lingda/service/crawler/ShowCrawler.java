@@ -4,14 +4,8 @@ import lingda.model.dto.DownLoadLink;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -34,11 +28,10 @@ public interface ShowCrawler {
     /**
      * get all the download links matching the url
      *
-     * @param showUrl
-     * @param show
+     * @param detailUrl
      * @return all the download links matching the url
      */
-    List<DownLoadLink> searchDownloadLinks(String showUrl, TVShow show);
+    List<DownLoadLink> searchDownloadLinks(String detailUrl);
 
     /**
      * find the reasonable show url

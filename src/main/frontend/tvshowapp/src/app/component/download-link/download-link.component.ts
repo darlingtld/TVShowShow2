@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Downloadlink} from '../../model/downloadlink';
 
 @Component({
   selector: 'app-download-link',
@@ -6,8 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./download-link.component.css']
 })
 export class DownloadLinkComponent implements OnInit {
+  @Input() downloadLink: Downloadlink;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

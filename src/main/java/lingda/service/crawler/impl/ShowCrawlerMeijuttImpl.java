@@ -57,12 +57,12 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
     }
 
     @Override
-    public List<DownLoadLink> searchDownloadLinks(final String showUrl, final TVShow show) {
+    public List<DownLoadLink> searchDownloadLinks(final String detailUrl) {
         try {
-            Document doc = Jsoup.connect(showUrl).get();
+            Document doc = Jsoup.connect(detailUrl).get();
             Elements elements = doc.getElementsByAttributeValue("class", "down_url");
             return elements.stream().map(element -> element.attr("value"))
-                    .collect(ArrayList::new, (list, url) -> list.add(new DownLoadLink(url, show)), ArrayList::addAll);
+                    .collect(ArrayList::new, (list, url) -> list.add(new DownLoadLink(url, null)), ArrayList::addAll);
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }

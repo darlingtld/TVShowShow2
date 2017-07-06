@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/map';
 import {Tvshow} from '../model/tvshow';
 import {Observable} from 'rxjs/Observable';
 import {Downloadlink} from '../model/downloadlink';
@@ -20,7 +21,9 @@ export class ShowService {
 
   getDownloadLinks(tvshow: Tvshow): Observable<Downloadlink[]> {
     const downloadLinkUrl = `${this.showUrl}/downloadlinks`;
-    return this.http.post(downloadLinkUrl, {...tvshow})
+    const search = new URLSearchParams();
+    search.set('detailUrl', tvshow.detailUrl);
+    return this.http.get(downloadLinkUrl, {search})
       .map(response => response.json() as Downloadlink[])
   }
 

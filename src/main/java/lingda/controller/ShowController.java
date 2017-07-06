@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -32,9 +33,8 @@ public class ShowController {
         return showManager.getShowList();
     }
 
-    @PostMapping("/downloadlinks")
-    public List<DownLoadLink> getDownloadLinks(@RequestBody TVShowDTO showDTO) {
-        TVShow tvShow = new TVShow(null, showDTO.getName(), showDTO.getEnglishName(), showDTO.getDescription(), showDTO.getSeason(), showDTO.getEpisode());
-        return meijuttShowCrawler.searchDownloadLinks(showDTO.getDetailUrl(), tvShow);
+    @GetMapping("/downloadlinks")
+    public List<DownLoadLink> getDownloadLinks(@RequestParam("detailUrl") String detailUrl) {
+        return meijuttShowCrawler.searchDownloadLinks(detailUrl);
     }
 }
