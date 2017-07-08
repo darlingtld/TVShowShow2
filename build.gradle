@@ -53,5 +53,7 @@ dependencies {
     compile group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.41'
     compile group: 'com.google.guava', name: 'guava', version: '22.0'
+    compile 'org.elasticsearch.client:rest:5.5.0'
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
