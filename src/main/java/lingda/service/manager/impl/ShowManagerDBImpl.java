@@ -2,9 +2,9 @@ package lingda.service.manager.impl;
 
 import lingda.dao.TVShowRepository;
 import lingda.model.pojo.TVShow;
+import lingda.service.manager.ShowManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import lingda.service.manager.ShowManager;
 
 import java.util.List;
 
@@ -36,4 +36,24 @@ public class ShowManagerDBImpl implements ShowManager {
     public TVShow addNew(TVShow tvShow) {
         return tvShowRepository.save(tvShow);
     }
+
+//    @Override
+//    public TVShow getShowByDetailUrl(String detailUrl) {
+//        return null;
+//    }
+
+//    @Override
+//    public TVShowSearchResult save(TVShowSearchResult result) {
+//        return searchResultRepository.save(result);
+//    }
+//
+//    @Override
+//    public void delete(TVShowSearchResult result) {
+//        searchResultRepository.delete(result);
+//    }
+//
+//    @Override
+//    public TVShowSearchResult findOne(String id) {
+//        return searchResultRepository.findOne(id);
+//    }
 }

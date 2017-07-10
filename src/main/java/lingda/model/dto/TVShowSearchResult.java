@@ -1,10 +1,15 @@
 package lingda.model.dto;
 
+
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by lingda on 28/06/2017.
  */
 public class TVShowSearchResult {
 
+    @JestId
+    private String id;
     private String name;
     private String description;
     private String englishName;
@@ -16,6 +21,14 @@ public class TVShowSearchResult {
     private Integer episode;
     private String detailUrl;
     private String imgUrl;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCategory() {
         return category;
@@ -108,12 +121,14 @@ public class TVShowSearchResult {
     @Override
     public String toString() {
         return "TVShowSearchResult{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", englishName='" + englishName + '\'' +
                 ", tvSource='" + tvSource + '\'' +
                 ", year=" + year +
                 ", status='" + status + '\'' +
+                ", category='" + category + '\'' +
                 ", season=" + season +
                 ", episode=" + episode +
                 ", detailUrl='" + detailUrl + '\'' +

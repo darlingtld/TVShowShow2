@@ -27,7 +27,7 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<TVShowSearchResult> searchTVShow(SearchTerm searchTerm) {
         logger.debug("search tv show with search term {}", searchTerm);
-//        get the search result list from meijutt
+//        search the search result list from meijutt
         List<TVShowSearchResult> tvShowSearchResultList = searchResultCache.get(searchTerm);
         tvShowSearchResultList.sort(searchResultComparator(searchTerm));
         return tvShowSearchResultList;

@@ -78,14 +78,14 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
         return tvShowSearchResultOptional.flatMap(tvShowSearchResult -> Optional.ofNullable(tvShowSearchResult.getDetailUrl()));
     }
 
-    //    analyze the document and get the matching result into a list of TVShowSearchResult
+    //    analyze the document and search the matching result into a list of TVShowSearchResult
     private List<TVShowSearchResult> parseDocumentIntoSearchResultMatchingTerm(Document document, String term) {
         Elements elements = document.getElementsByClass("cn_box2");
         List<Element> matchingElements = elements.stream()
                 .filter(element ->
                         removeIllegalString(element.getElementsByTag("li").get(0).text().toLowerCase()).contains(removeIllegalString(term.toLowerCase()))
                                 || removeIllegalString(element.getElementsByTag("li").get(1).text().toLowerCase()).contains(removeIllegalString(term.toLowerCase()))).collect(Collectors.toList());
-        logger.debug("get elements matching term {}", matchingElements);
+        logger.debug("search elements matching term {}", matchingElements);
         List<TVShowSearchResult> searchResultList = new ArrayList<>();
 //        parse the elements into a TVShowSearchResult
         matchingElements.forEach(element -> {
