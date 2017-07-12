@@ -1,5 +1,6 @@
 package lingda.service.manager;
 
+import com.google.common.collect.ImmutableMap;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.SearchResult;
 import lingda.model.dto.TVShowSearchResult;
@@ -41,7 +42,7 @@ public class ShowManagerESTest {
 
     @Test
     public void testSearchDocuments() throws IOException {
-        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, "name", "test", "test_index", "showshow");
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, ImmutableMap.of("englishName", "hero"), "searchresult", "tvshowsearchresult");
         for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
             System.out.println(result.id);
             System.out.println(result.source.getName());

@@ -33,8 +33,8 @@ public class SearchServiceImpl implements SearchService {
         return tvShowSearchResultList;
     }
 
-//    TODO optimize the algorithm to order the search results
-    protected Comparator<TVShowSearchResult> searchResultComparator(SearchTerm searchTerm) {
+    //    TODO optimize the algorithm to order the search results
+    Comparator<TVShowSearchResult> searchResultComparator(SearchTerm searchTerm) {
         return (o1, o2) -> {
             double o1Sim = StringSimilarityUtil.sim(o1.getName().toLowerCase(), searchTerm.getTerm().toLowerCase()) + StringSimilarityUtil.sim(o1.getEnglishName().toLowerCase(), searchTerm.getTerm().toLowerCase());
             double o2Sim = StringSimilarityUtil.sim(o2.getName().toLowerCase(), searchTerm.getTerm().toLowerCase()) + StringSimilarityUtil.sim(o1.getEnglishName().toLowerCase(), searchTerm.getTerm().toLowerCase());

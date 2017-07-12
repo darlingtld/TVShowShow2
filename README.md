@@ -37,5 +37,6 @@ cd kibana-5.4.3-darwin-x86_64
 ./bin/kibana-plugin install x-pack
 ```
 > after the x-pack is installed.  use elastic:changeme to visit localhost:5601
-
+#Create index
+curl --user elastic:changeme -XPUT 'localhost:9200/searchresult?pretty' 
 

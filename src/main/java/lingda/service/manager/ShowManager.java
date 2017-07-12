@@ -1,9 +1,9 @@
 package lingda.service.manager;
 
+import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
 
-import java.awt.print.Book;
 import java.util.List;
 
 /**
@@ -19,12 +19,14 @@ public interface ShowManager {
 
     TVShow addNew(TVShow tvShow);
 
-//    fetch data from elasticsearch
-//    TVShow getShowByDetailUrl(String detailUrl);
-//
-//    TVShowSearchResult save(TVShowSearchResult result);
-//
-//    void delete(TVShowSearchResult result);
-//
-//    TVShowSearchResult findOne(String id);
+    //    fetch data from elasticsearch
+    TVShowSearchResult searchByDetailUrlFromES(String detailUrl);
+
+    TVShowSearchResult saveToES(TVShowSearchResult result);
+
+    void deleteFromES(TVShowSearchResult result);
+
+    TVShowSearchResult getFromES(String id);
+
+    List<TVShowSearchResult> searchBySearchTermFromES(String key, SearchTerm searchTerm);
 }

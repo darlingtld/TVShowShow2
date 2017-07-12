@@ -135,4 +135,45 @@ public class TVShowSearchResult {
                 ", imgUrl='" + imgUrl + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TVShowSearchResult)) return false;
+
+        TVShowSearchResult that = (TVShowSearchResult) o;
+
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
+            return false;
+        if (getEnglishName() != null ? !getEnglishName().equals(that.getEnglishName()) : that.getEnglishName() != null)
+            return false;
+        if (getTvSource() != null ? !getTvSource().equals(that.getTvSource()) : that.getTvSource() != null)
+            return false;
+        if (getYear() != null ? !getYear().equals(that.getYear()) : that.getYear() != null) return false;
+        if (getStatus() != null ? !getStatus().equals(that.getStatus()) : that.getStatus() != null) return false;
+        if (getCategory() != null ? !getCategory().equals(that.getCategory()) : that.getCategory() != null)
+            return false;
+        if (getSeason() != null ? !getSeason().equals(that.getSeason()) : that.getSeason() != null) return false;
+        if (getEpisode() != null ? !getEpisode().equals(that.getEpisode()) : that.getEpisode() != null) return false;
+        if (getDetailUrl() != null ? !getDetailUrl().equals(that.getDetailUrl()) : that.getDetailUrl() != null)
+            return false;
+        return getImgUrl() != null ? getImgUrl().equals(that.getImgUrl()) : that.getImgUrl() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getEnglishName() != null ? getEnglishName().hashCode() : 0);
+        result = 31 * result + (getTvSource() != null ? getTvSource().hashCode() : 0);
+        result = 31 * result + (getYear() != null ? getYear().hashCode() : 0);
+        result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
+        result = 31 * result + (getCategory() != null ? getCategory().hashCode() : 0);
+        result = 31 * result + (getSeason() != null ? getSeason().hashCode() : 0);
+        result = 31 * result + (getEpisode() != null ? getEpisode().hashCode() : 0);
+        result = 31 * result + (getDetailUrl() != null ? getDetailUrl().hashCode() : 0);
+        result = 31 * result + (getImgUrl() != null ? getImgUrl().hashCode() : 0);
+        return result;
+    }
 }

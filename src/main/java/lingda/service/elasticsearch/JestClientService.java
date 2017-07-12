@@ -12,6 +12,7 @@ import io.searchbox.indices.CreateIndex;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class JestClientService implements Serializable {
@@ -97,9 +99,14 @@ public class JestClientService implements Serializable {
         return client.execute(index);
     }
 
-    public <T> List<SearchResult.Hit<T, Void>> search(Class<T> clazz, String key, String value, String indexName, String typeName) throws IOException {
+    public <T> List<SearchResult.Hit<T, Void>> search(Class<T> clazz, Map<String, String> queryMap, String indexName, String typeName) throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery(key, value));
+
+        BoolQueryBuilder boolQuery = new BoolQueryBuilder();
+        for (Map.Entry<String, String> entry : queryMap.entrySet()){
+            boolQuery.must(QueryBuilders.matchQuery(entry.getKey(), entry.getValue()));
+        }
+        searchSourceBuilder.query(boolQuery);
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.
@@ -112,7 +119,7 @@ public class JestClientService implements Serializable {
         return result.getHits(clazz);
     }
 
-    public <T> T get(Class<T> clazz, String indexName, String id, String typeName) throws IOException {
+    public <T> T get(Class<T> clazz, String id, String indexName, String typeName) throws IOException {
         Get get = new Get.Builder(indexName, id).type(typeName).build();
 
         JestResult result = client.execute(get);
