@@ -46,8 +46,14 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
     //    the search is done by the source site, no need to filter again
     @Override
     public List<TVShowSearchResult> search(final SearchTerm searchTerm) {
-        Document doc = this.searchDocumentUsingHttpPost(removeBadCharacter(searchTerm.getTerm()));
-        return parseDocumentIntoSearchResultMatchingTerm(doc, "");
+        logger.info("start searching from {} for term {}", site, searchTerm);
+        try {
+            Document doc = this.searchDocumentUsingHttpPost(removeBadCharacter(searchTerm.getTerm()));
+            return parseDocumentIntoSearchResultMatchingTerm(doc, "");
+        } catch (Exception e) {
+            logger.error("error in searching from meijutt.  reason is {}", e.getMessage(), e);
+            return Collections.emptyList();
+        }
     }
 
     @Override

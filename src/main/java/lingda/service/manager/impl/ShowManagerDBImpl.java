@@ -65,7 +65,7 @@ public class ShowManagerDBImpl implements ShowManager {
             } else {
                 return null;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("error occurs in searching detailUrl From ES.  reason is {}", e.getMessage(), e);
             return null;
         }
@@ -93,7 +93,7 @@ public class ShowManagerDBImpl implements ShowManager {
     public TVShowSearchResult getFromES(String id) {
         try {
             return jestClientService.get(TVShowSearchResult.class, id, INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("error in getting from ES by id={}.  reason is {}", id, e.getMessage(), e);
             return null;
         }
@@ -105,11 +105,11 @@ public class ShowManagerDBImpl implements ShowManager {
             List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, ImmutableMap.of(key, searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
             List<TVShowSearchResult> tvShowSearchResultList = new ArrayList<>();
             for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
-                logger.debug("[name]:{} [socre]:{}", result.source.getName(), result.score);
+                logger.info("[name]:{} [socre]:{}", result.source.getName(), result.score);
                 tvShowSearchResultList.add(result.source);
             }
             return tvShowSearchResultList;
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("error in searching by searchTerm={} from ES.  reason is {}", searchTerm, e.getMessage(), e);
             return Collections.emptyList();
         }

@@ -43,14 +43,21 @@ public class SearchResultCache {
                 .build(
                         new CacheLoader<SearchTerm, List<TVShowSearchResult>>() {
                             public List<TVShowSearchResult> load(SearchTerm searchTerm) {
+                                List<TVShowSearchResult> resultList = new ArrayList<>();
 //                                search from elasticsearch
                                 List<TVShowSearchResult> searchResultESList = new ArrayList<>();
                                 searchResultESList.addAll(showManagerDBImpl.searchBySearchTermFromES("name", searchTerm));
                                 searchResultESList.addAll(showManagerDBImpl.searchBySearchTermFromES("englishName", searchTerm));
-                                searchResultESList.forEach(searchResult -> logger.info("[result]:{}", searchResult));
+                                searchResultESList.forEach(searchResult -> logger.info("[result from ES]:{}", searchResult));
+                                resultList.addAll(searchResultESList);
+//                                search from online
                                 List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijutt.search(searchTerm);
+//                                diff the search result from internet and elasticsearch.  save the new result to ES.
+                                tvShowSearchResultList.removeAll(searchResultESList);
                                 tvShowSearchResultList.forEach(searchResult -> showManagerDBImpl.saveToES(searchResult));
-                                return tvShowSearchResultList;
+//                                merge the two result list
+                                resultList.addAll(tvShowSearchResultList);
+                                return resultList;
                             }
                         });
     }

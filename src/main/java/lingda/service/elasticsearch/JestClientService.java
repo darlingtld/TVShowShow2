@@ -13,6 +13,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
+import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 @Service
 public class JestClientService implements Serializable {
@@ -103,8 +107,8 @@ public class JestClientService implements Serializable {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
         BoolQueryBuilder boolQuery = new BoolQueryBuilder();
-        for (Map.Entry<String, String> entry : queryMap.entrySet()){
-            boolQuery.must(QueryBuilders.matchQuery(entry.getKey(), entry.getValue()));
+        for (Map.Entry<String, String> entry : queryMap.entrySet()) {
+            boolQuery.should(QueryBuilders.matchQuery(entry.getKey(), entry.getValue() ));
         }
         searchSourceBuilder.query(boolQuery);
 

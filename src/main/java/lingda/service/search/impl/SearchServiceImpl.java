@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class SearchServiceImpl implements SearchService {
     public List<TVShowSearchResult> searchTVShow(SearchTerm searchTerm) {
         logger.debug("search tv show with search term {}", searchTerm);
 //        search the search result list from meijutt
-        List<TVShowSearchResult> tvShowSearchResultList = searchResultCache.get(searchTerm);
+        List<TVShowSearchResult> tvShowSearchResultList = new ArrayList<>(searchResultCache.get(searchTerm));
         tvShowSearchResultList.sort(searchResultComparator(searchTerm));
         return tvShowSearchResultList;
     }
