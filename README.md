@@ -1,5 +1,5 @@
 **This app is using Spring boot and Angular 4**
-
+===============================================
 #Start the application
 > Configurations can be found in application.properties
 > Start the MySQL server(On Mac, mysql.server start).  
@@ -39,4 +39,6 @@ cd kibana-5.4.3-darwin-x86_64
 > after the x-pack is installed.  use elastic:changeme to visit localhost:5601
 #Create index
 curl --user elastic:changeme -XPUT 'localhost:9200/searchresult?pretty' 
+#Delete index
+curl --user elastic:changeme -XDELETE 'localhost:9200/searchresult'
 

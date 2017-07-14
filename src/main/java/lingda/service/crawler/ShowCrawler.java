@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ShowCrawler {
 
     /**
-     * @param searchTerm the search term
+     * @param searchTerm the searchFuzzy term
      * @return a map containing the show name and the url, null if nothing is found
      */
     List<TVShowSearchResult> search(SearchTerm searchTerm);

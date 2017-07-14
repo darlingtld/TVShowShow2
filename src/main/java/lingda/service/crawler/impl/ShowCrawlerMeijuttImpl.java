@@ -6,6 +6,7 @@ import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
 import lingda.service.cache.DocumentHttpGetCache;
 import lingda.service.crawler.ShowCrawler;
+import lingda.service.manager.ShowManager;
 import lingda.util.NumericMapperUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -43,7 +44,10 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
     @Autowired
     private DocumentHttpGetCache documentHttpGetCache;
 
-    //    the search is done by the source site, no need to filter again
+    @Autowired
+    private ShowManager showManagerDBImpl;
+
+    //    the searchFuzzy is done by the source site, no need to filter again
     @Override
     public List<TVShowSearchResult> search(final SearchTerm searchTerm) {
         logger.info("start searching from {} for term {}", site, searchTerm);
@@ -65,10 +69,11 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
     @Override
     public List<DownLoadLink> searchDownloadLinks(final String detailUrl) {
         try {
+            TVShow tvShow = new TVShow(showManagerDBImpl.searchByDetailUrlFromES(detailUrl));
             Document doc = Jsoup.connect(detailUrl).get();
             Elements elements = doc.getElementsByAttributeValue("class", "down_url");
             return elements.stream().map(element -> element.attr("value"))
-                    .collect(ArrayList::new, (list, url) -> list.add(new DownLoadLink(url, null)), ArrayList::addAll);
+                    .collect(ArrayList::new, (list, url) -> list.add(new DownLoadLink(url, tvShow)), ArrayList::addAll);
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
@@ -84,14 +89,14 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
         return tvShowSearchResultOptional.flatMap(tvShowSearchResult -> Optional.ofNullable(tvShowSearchResult.getDetailUrl()));
     }
 
-    //    analyze the document and search the matching result into a list of TVShowSearchResult
+    //    analyze the document and searchFuzzy the matching result into a list of TVShowSearchResult
     private List<TVShowSearchResult> parseDocumentIntoSearchResultMatchingTerm(Document document, String term) {
         Elements elements = document.getElementsByClass("cn_box2");
         List<Element> matchingElements = elements.stream()
                 .filter(element ->
                         removeIllegalString(element.getElementsByTag("li").get(0).text().toLowerCase()).contains(removeIllegalString(term.toLowerCase()))
                                 || removeIllegalString(element.getElementsByTag("li").get(1).text().toLowerCase()).contains(removeIllegalString(term.toLowerCase()))).collect(Collectors.toList());
-        logger.debug("search elements matching term {}", matchingElements);
+        logger.debug("searchFuzzy elements matching term {}", matchingElements);
         List<TVShowSearchResult> searchResultList = new ArrayList<>();
 //        parse the elements into a TVShowSearchResult
         matchingElements.forEach(element -> {
@@ -110,7 +115,7 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
             searchResult.setDescription(fetchDescriptionForTheShow(detailUrl));
             searchResultList.add(searchResult);
         });
-        logger.debug("search result for {} is {}", term, matchingElements);
+        logger.debug("searchFuzzy result for {} is {}", term, matchingElements);
         return searchResultList;
     }
 

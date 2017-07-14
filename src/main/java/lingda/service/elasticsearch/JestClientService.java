@@ -22,8 +22,11 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -103,14 +106,42 @@ public class JestClientService implements Serializable {
         return client.execute(index);
     }
 
+    public <T> List<SearchResult.Hit<T, Void>> searchFuzzy(Class<T> clazz, Map<String, String> queryMap, String indexName, String typeName) throws IOException {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        List<String> textList = new ArrayList<>();
+        Map<String, Float> fieldMap = new HashMap<>();
+        for (Map.Entry<String, String> entry : queryMap.entrySet()) {
+            fieldMap.put(entry.getKey(), 1.0f);
+            textList.add("*" + entry.getValue() + "*");
+        }
+        QueryBuilder queryBuilder = QueryBuilders.queryStringQuery(String.join(" OR ", textList)).fields(fieldMap);
+
+        searchSourceBuilder.query(queryBuilder);
+
+        Search search = new Search.Builder(searchSourceBuilder.toString())
+                // multiple index or types can be added.
+                .addIndex(indexName)
+                .addType(typeName)
+                .build();
+
+        SearchResult result = client.execute(search);
+
+        return result.getHits(clazz);
+    }
+
     public <T> List<SearchResult.Hit<T, Void>> search(Class<T> clazz, Map<String, String> queryMap, String indexName, String typeName) throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-        BoolQueryBuilder boolQuery = new BoolQueryBuilder();
+        List<String> textList = new ArrayList<>();
+        List<String> fieldList = new ArrayList<>();
         for (Map.Entry<String, String> entry : queryMap.entrySet()) {
-            boolQuery.should(QueryBuilders.matchQuery(entry.getKey(), entry.getValue() ));
+            fieldList.add(entry.getKey());
+            textList.add(entry.getValue());
         }
-        searchSourceBuilder.query(boolQuery);
+        QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(String.join(" OR ", textList), fieldList.toArray(new String[fieldList.size()]));
+
+        searchSourceBuilder.query(queryBuilder);
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.

@@ -1,5 +1,7 @@
 package lingda.model.pojo;
 
+import lingda.model.dto.TVShowSearchResult;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,6 +35,16 @@ public class TVShow {
     }
 
     public TVShow() {
+    }
+
+    public TVShow(TVShowSearchResult searchResult) {
+        if (searchResult != null) {
+            setName(searchResult.getName());
+            setEnglishName(searchResult.getEnglishName());
+            setDescription(searchResult.getDescription());
+            setSeason(searchResult.getSeason());
+            setEpisode(searchResult.getEpisode());
+        }
     }
 
     @Override

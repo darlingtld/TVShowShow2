@@ -102,7 +102,7 @@ public class ShowManagerDBImpl implements ShowManager {
     @Override
     public List<TVShowSearchResult> searchBySearchTermFromES(String key, SearchTerm searchTerm) {
         try {
-            List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, ImmutableMap.of(key, searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
+            List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchFuzzy(TVShowSearchResult.class, ImmutableMap.of(key, searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
             List<TVShowSearchResult> tvShowSearchResultList = new ArrayList<>();
             for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
                 logger.info("[name]:{} [socre]:{}", result.source.getName(), result.score);

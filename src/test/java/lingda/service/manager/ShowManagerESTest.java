@@ -42,7 +42,7 @@ public class ShowManagerESTest {
 
     @Test
     public void testSearchDocuments() throws IOException {
-        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, ImmutableMap.of("englishName", "hero"), "searchresult", "tvshowsearchresult");
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchFuzzy(TVShowSearchResult.class, ImmutableMap.of("englishName", "hero"), "searchresult", "tvshowsearchresult");
         for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
             System.out.println(result.id);
             System.out.println(result.source.getName());
@@ -53,6 +53,15 @@ public class ShowManagerESTest {
     public void testGetDocument() throws IOException {
         TVShowSearchResult result = jestClientService.get(TVShowSearchResult.class, "test_index", "AV0rB64nqI2Cg47fRtxw", "showshow");
         System.out.println(result.getName());
+    }
+
+    @Test
+    public void testSearchShowResultByDetailUrl() throws IOException {
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, ImmutableMap.of("detailUrl", "http://www.meijutt.com/content/meiju20884.html"), "searchresult", "tvshowsearchresult");
+        for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
+            System.out.println(result.id);
+            System.out.println(result.source.getName());
+        }
     }
 //
 //    @Test
