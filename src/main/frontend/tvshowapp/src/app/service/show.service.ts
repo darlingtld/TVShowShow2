@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import {Tvshow} from '../model/tvshow';
 import {Observable} from 'rxjs/Observable';
 import {Downloadlink} from '../model/downloadlink';
+import {TvshowSearchResult} from '../model/tvshow-search-result';
 
 @Injectable()
 export class ShowService {
@@ -25,6 +26,15 @@ export class ShowService {
     search.set('detailUrl', tvshow.detailUrl);
     return this.http.get(downloadLinkUrl, {search})
       .map(response => response.json() as Downloadlink[])
+  }
+
+  getTvshowSearchResultByDetailUrl(detailUrl: string): Promise<TvshowSearchResult> {
+    const showDetailUrl = `${this.showUrl}/tvshow`;
+    const search = new URLSearchParams();
+    search.set('detailUrl', detailUrl);
+    return this.http.get(showDetailUrl, {search}).toPromise()
+      .then(response => response.json() as TvshowSearchResult)
+      .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {

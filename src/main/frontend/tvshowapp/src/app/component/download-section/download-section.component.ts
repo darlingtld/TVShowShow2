@@ -4,6 +4,7 @@ import {Downloadlink} from '../../model/downloadlink';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {ShowService} from '../../service/show.service';
 import {Tvshow} from '../../model/tvshow';
+import {TvshowSearchResult} from '../../model/tvshow-search-result';
 
 @Component({
   selector: 'app-download-section',
@@ -12,7 +13,7 @@ import {Tvshow} from '../../model/tvshow';
 })
 export class DownloadSectionComponent implements OnInit {
 
-  tvshow: Tvshow;
+  tvshowSearchResult: TvshowSearchResult;
   downloadlinkList: Observable<Downloadlink[]>;
   detailUrl: string;
   isLoading: boolean;
@@ -30,6 +31,11 @@ export class DownloadSectionComponent implements OnInit {
       })
       .switchMap((tvshow: Tvshow) => this.showService.getDownloadLinks(tvshow))
       .do(() => this.isLoading = false);
+
+    this.route.queryParamMap
+      .map((paramMap: ParamMap) => paramMap.get('detailUrl'))
+      .switchMap((detailUrl: string) => this.showService.getTvshowSearchResultByDetailUrl(detailUrl))
+      .subscribe((result: TvshowSearchResult) => this.tvshowSearchResult = result);
   }
 
 }

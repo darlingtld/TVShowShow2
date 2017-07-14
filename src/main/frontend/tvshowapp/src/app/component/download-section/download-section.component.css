@@ -1,5 +1,11 @@
 @import "../search-result/search-result.component.css";
+@import "../search-result-detail/search-result-detail.component.css";
 
 div.search-bar {
   padding: 30px 0 30px 30px;
+}
+
+div.show-detail {
+  display: flex;
+  width: 70%;
 }
