@@ -1,3 +1,3 @@
-.downloadlink > span {
+.downloadlink > span, a {
   font-size: small;
 }

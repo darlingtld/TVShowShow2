@@ -2,6 +2,7 @@ package lingda.controller;
 
 import lingda.model.dto.DownLoadLink;
 import lingda.model.dto.TVShowDTO;
+import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
 import lingda.service.crawler.ShowCrawler;
 import lingda.service.manager.ShowManager;
@@ -36,5 +37,10 @@ public class ShowController {
     @GetMapping("/downloadlinks")
     public List<DownLoadLink> getDownloadLinks(@RequestParam("detailUrl") String detailUrl) {
         return meijuttShowCrawler.searchDownloadLinks(detailUrl);
+    }
+
+    @GetMapping("/tvshow")
+    public TVShowSearchResult getTVShow(@RequestParam("detailUrl") String detailUrl) {
+        return showManager.searchByDetailUrlFromES(detailUrl);
     }
 }

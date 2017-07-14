@@ -8,4 +8,9 @@ div.search-bar {
 div.show-detail {
   display: flex;
   width: 70%;
+  padding: 10px 0 0 50px;
+}
+
+div.downloadlink-detail {
+  margin-left: 50px;
 }
