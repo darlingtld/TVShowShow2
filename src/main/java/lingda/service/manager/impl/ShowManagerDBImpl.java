@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lingda on 24/03/2017.
@@ -57,24 +58,9 @@ public class ShowManagerDBImpl implements ShowManager {
     }
 
     @Override
-    public TVShowSearchResult searchByDetailUrlFromES(String detailUrl) {
-        try {
-            List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, ImmutableMap.of("detailUrl", detailUrl), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
-            if (!resultList.isEmpty()) {
-                return resultList.get(0).source;
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            logger.error("error occurs in searching detailUrl From ES.  reason is {}", e.getMessage(), e);
-            return null;
-        }
-    }
-
-    @Override
     public TVShowSearchResult saveToES(TVShowSearchResult result) {
         try {
-            logger.debug("save result={} to elasticsearch with index={} type={}", result, INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
+            logger.info("save to ES result={} index={} type={}", result, INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
             JestResult jestResult = jestClientService.index(result, INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
             return jestResult.getSourceAsObject(TVShowSearchResult.class);
         } catch (IOException e) {
@@ -112,6 +98,21 @@ public class ShowManagerDBImpl implements ShowManager {
         } catch (Exception e) {
             logger.error("error in searching by searchTerm={} from ES.  reason is {}", searchTerm, e.getMessage(), e);
             return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public TVShowSearchResult searchTVShowSearchResult(Map<String, String> fieldValueMap) {
+        try {
+            List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, fieldValueMap, INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
+            if (!resultList.isEmpty()) {
+                return resultList.get(0).source;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            logger.error("error occurs in searching detailUrl From ES.  reason is {}", e.getMessage(), e);
+            return null;
         }
     }
 

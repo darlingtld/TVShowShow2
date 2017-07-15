@@ -1,10 +1,12 @@
 package lingda.service.manager;
 
+import com.google.common.collect.ImmutableMap;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lingda on 24/03/2017.
@@ -19,9 +21,6 @@ public interface ShowManager {
 
     TVShow addNew(TVShow tvShow);
 
-    //    fetch data from elasticsearch
-    TVShowSearchResult searchByDetailUrlFromES(String detailUrl);
-
     TVShowSearchResult saveToES(TVShowSearchResult result);
 
     void deleteFromES(TVShowSearchResult result);
@@ -29,4 +28,6 @@ public interface ShowManager {
     TVShowSearchResult getFromES(String id);
 
     List<TVShowSearchResult> searchBySearchTermFromES(String key, SearchTerm searchTerm);
+
+    TVShowSearchResult searchTVShowSearchResult(Map<String, String> fieldValueMap);
 }

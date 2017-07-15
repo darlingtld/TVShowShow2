@@ -27,7 +27,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<TVShowSearchResult> searchTVShow(SearchTerm searchTerm) {
-        logger.debug("searchFuzzy tv show with searchFuzzy term {}", searchTerm);
+        logger.debug("search tv show with search term {}", searchTerm);
 //        searchFuzzy the searchFuzzy result list from meijutt
 //        use 'new ArrayList()' to avoid ConcurrentModificationException when sorting a list in Java 8
         List<TVShowSearchResult> tvShowSearchResultList = new ArrayList<>(searchResultCache.get(searchTerm));

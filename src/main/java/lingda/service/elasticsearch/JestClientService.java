@@ -28,8 +28,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchPhraseQuery;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Service
 public class JestClientService implements Serializable {
@@ -130,18 +133,14 @@ public class JestClientService implements Serializable {
         return result.getHits(clazz);
     }
 
-    public <T> List<SearchResult.Hit<T, Void>> search(Class<T> clazz, Map<String, String> queryMap, String indexName, String typeName) throws IOException {
+    public <T> List<SearchResult.Hit<T, Void>> search(Class<T> clazz, Map<String, String> fieldValueMap, String indexName, String typeName) throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = boolQuery();
 
-        List<String> textList = new ArrayList<>();
-        List<String> fieldList = new ArrayList<>();
-        for (Map.Entry<String, String> entry : queryMap.entrySet()) {
-            fieldList.add(entry.getKey());
-            textList.add(entry.getValue());
+        for (Map.Entry<String, String> entry : fieldValueMap.entrySet()) {
+            boolQueryBuilder = boolQueryBuilder.must(matchPhraseQuery(entry.getKey(), entry.getValue()));
         }
-        QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(String.join(" OR ", textList), fieldList.toArray(new String[fieldList.size()]));
-
-        searchSourceBuilder.query(queryBuilder);
+        searchSourceBuilder.query(boolQueryBuilder);
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.

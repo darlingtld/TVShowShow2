@@ -1,5 +1,6 @@
 package lingda.service.crawler.impl;
 
+import com.google.common.collect.ImmutableMap;
 import lingda.model.dto.DownLoadLink;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
@@ -69,7 +70,7 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
     @Override
     public List<DownLoadLink> searchDownloadLinks(final String detailUrl) {
         try {
-            TVShow tvShow = new TVShow(showManagerDBImpl.searchByDetailUrlFromES(detailUrl));
+            TVShow tvShow = new TVShow(showManagerDBImpl.searchTVShowSearchResult(ImmutableMap.of("detailUrl", detailUrl)));
             Document doc = Jsoup.connect(detailUrl).get();
             Elements elements = doc.getElementsByAttributeValue("class", "down_url");
             return elements.stream().map(element -> element.attr("value"))
@@ -96,7 +97,7 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
                 .filter(element ->
                         removeIllegalString(element.getElementsByTag("li").get(0).text().toLowerCase()).contains(removeIllegalString(term.toLowerCase()))
                                 || removeIllegalString(element.getElementsByTag("li").get(1).text().toLowerCase()).contains(removeIllegalString(term.toLowerCase()))).collect(Collectors.toList());
-        logger.debug("searchFuzzy elements matching term {}", matchingElements);
+        logger.debug("search elements matching term {}", matchingElements);
         List<TVShowSearchResult> searchResultList = new ArrayList<>();
 //        parse the elements into a TVShowSearchResult
         matchingElements.forEach(element -> {
@@ -115,7 +116,8 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
             searchResult.setDescription(fetchDescriptionForTheShow(detailUrl));
             searchResultList.add(searchResult);
         });
-        logger.debug("searchFuzzy result for {} is {}", term, matchingElements);
+        logger.debug("search result for {} is {}", term, matchingElements);
+        logger.info("finish search from {}.  result count is {}", site, searchResultList.size());
         return searchResultList;
     }
 
