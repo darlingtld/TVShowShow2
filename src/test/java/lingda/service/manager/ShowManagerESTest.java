@@ -63,6 +63,15 @@ public class ShowManagerESTest {
             System.out.println(result.source.getName());
         }
     }
+
+    @Test
+    public void testSearchShowResultUsingChinsese() throws IOException {
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, ImmutableMap.of("name", "血族"), "searchresult", "tvshowsearchresult");
+        for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
+            System.out.println(result.id);
+            System.out.println(result.source.getName());
+        }
+    }
 //
 //    @Test
 //    public void testFindByTitle() {

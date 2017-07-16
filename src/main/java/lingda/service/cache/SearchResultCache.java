@@ -51,12 +51,12 @@ public class SearchResultCache {
                                 searchResultESList.forEach(searchResult -> logger.info("[result from ES]:{}", searchResult));
                                 resultList.addAll(searchResultESList);
 //                                searchFuzzy from online
-                                List<TVShowSearchResult> tvShowSearchResultList = showCrawlerMeijutt.search(searchTerm);
+                                List<TVShowSearchResult> meijuttSearchResultList = showCrawlerMeijutt.search(searchTerm);
 //                                diff the searchFuzzy result from internet and elasticsearch.  save the new result to ES.
-                                tvShowSearchResultList.removeAll(searchResultESList);
-                                tvShowSearchResultList.forEach(searchResult -> showManagerDBImpl.saveToES(searchResult));
+                                meijuttSearchResultList.removeAll(searchResultESList);
+                                meijuttSearchResultList.forEach(searchResult -> showManagerDBImpl.saveToES(searchResult));
 //                                merge the two result list
-                                resultList.addAll(tvShowSearchResultList);
+                                resultList.addAll(meijuttSearchResultList);
                                 return resultList;
                             }
                         });

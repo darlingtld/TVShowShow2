@@ -60,7 +60,9 @@ public class ShowManagerDBImpl implements ShowManager {
     @Override
     public TVShowSearchResult saveToES(TVShowSearchResult result) {
         try {
+            result.setId(String.valueOf(result.hashCode()));
             logger.info("save to ES result={} index={} type={}", result, INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
+//            use the hashcode of the tvshowsearchresult to avoid duplication
             JestResult jestResult = jestClientService.index(result, INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
             return jestResult.getSourceAsObject(TVShowSearchResult.class);
         } catch (IOException e) {

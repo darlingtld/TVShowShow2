@@ -1,6 +1,6 @@
 #Issues and TODOs
 ### Bugs
-* Use the hashcode of TVShowSearchResult as the id when saving to elasticsearch
+* Take care of Chinese characters in elasticsearch
 * Investigate the fuzziness of elasticsearch to refactor the search related code
 * Save downloadlinks somewhere(mysql? elasticsearch?)
 
