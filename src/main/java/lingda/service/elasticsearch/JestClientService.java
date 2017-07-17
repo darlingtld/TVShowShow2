@@ -12,6 +12,7 @@ import io.searchbox.indices.CreateIndex;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -29,6 +30,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.fuzzyQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhraseQuery;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -109,18 +111,14 @@ public class JestClientService implements Serializable {
         return client.execute(index);
     }
 
-    public <T> List<SearchResult.Hit<T, Void>> searchFuzzy(Class<T> clazz, Map<String, String> queryMap, String indexName, String typeName) throws IOException {
+    public <T> List<SearchResult.Hit<T, Void>> searchFuzzy(Class<T> clazz, Map<String, String> fieldValueMap, String indexName, String typeName) throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = boolQuery();
 
-        List<String> textList = new ArrayList<>();
-        Map<String, Float> fieldMap = new HashMap<>();
-        for (Map.Entry<String, String> entry : queryMap.entrySet()) {
-            fieldMap.put(entry.getKey(), 1.0f);
-            textList.add("*" + entry.getValue() + "*");
+        for (Map.Entry<String, String> entry : fieldValueMap.entrySet()) {
+            boolQueryBuilder = boolQueryBuilder.must(fuzzyQuery(entry.getKey(), entry.getValue()).fuzziness(Fuzziness.TWO).prefixLength(2));
         }
-        QueryBuilder queryBuilder = QueryBuilders.queryStringQuery(String.join(" OR ", textList)).fields(fieldMap);
-
-        searchSourceBuilder.query(queryBuilder);
+        searchSourceBuilder.query(boolQueryBuilder);
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.

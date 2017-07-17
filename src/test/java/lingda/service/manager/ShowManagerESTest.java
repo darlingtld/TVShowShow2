@@ -66,7 +66,7 @@ public class ShowManagerESTest {
 
     @Test
     public void testSearchShowResultUsingChinsese() throws IOException {
-        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, ImmutableMap.of("name", "血族"), "searchresult", "tvshowsearchresult");
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchFuzzy(TVShowSearchResult.class, ImmutableMap.of("name", "英雄"), "searchresult", "tvshowsearchresult");
         for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
             System.out.println(result.id);
             System.out.println(result.source.getName());
