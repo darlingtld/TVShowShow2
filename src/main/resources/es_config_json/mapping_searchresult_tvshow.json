@@ -1,0 +1,83 @@
+{
+  "properties": {
+    "name": {
+      "type": "keyword",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "store": "no",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "ik_pinyin_analyzer"
+        }
+      }
+    },
+    "englishName": {
+      "type": "keyword",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "store": "no"
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "store": "no",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "ik_pinyin_analyzer"
+        }
+      }
+    },
+    "tvSource": {
+      "type": "text",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "store": "no",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "ik_pinyin_analyzer"
+        }
+      }
+    },
+    "year": {
+      "type": "integer"
+    },
+    "status": {
+      "type": "keyword",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "store": "no",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "ik_pinyin_analyzer"
+        }
+      }
+    },
+    "category": {
+      "type": "keyword",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "store": "no",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "ik_pinyin_analyzer"
+        }
+      }
+    },
+    "season": {
+      "type": "integer"
+    },
+    "episode": {
+      "type": "integer"
+    },
+    "detailUrl": {
+      "type": "text"
+    },
+    "imgUrl": {
+      "type": "text"
+    }
+  }
+}

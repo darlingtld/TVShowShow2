@@ -1,0 +1,23 @@
+{
+  "index": {
+    "analysis": {
+      "analyzer": {
+        "ik_pinyin_analyzer": {
+          "type": "custom",
+          "tokenizer": "ik_smart",
+          "filter": [
+            "my_pinyin",
+            "word_delimiter"
+          ]
+        }
+      },
+      "filter": {
+        "my_pinyin": {
+          "type": "pinyin",
+          "first_letter": "prefix",
+          "padding_char": " "
+        }
+      }
+    }
+  }
+}

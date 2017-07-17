@@ -45,9 +45,7 @@ public class SearchResultCache {
                             public List<TVShowSearchResult> load(SearchTerm searchTerm) {
                                 List<TVShowSearchResult> resultList = new ArrayList<>();
 //                                searchFuzzy from elasticsearch
-                                List<TVShowSearchResult> searchResultESList = new ArrayList<>();
-                                searchResultESList.addAll(showManagerDBImpl.searchBySearchTermFromES("name", searchTerm));
-                                searchResultESList.addAll(showManagerDBImpl.searchBySearchTermFromES("englishName", searchTerm));
+                                List<TVShowSearchResult> searchResultESList = showManagerDBImpl.searchBySearchTermFromES(searchTerm);
                                 searchResultESList.forEach(searchResult -> logger.info("[result from ES]:{}", searchResult));
                                 resultList.addAll(searchResultESList);
 //                                searchFuzzy from online

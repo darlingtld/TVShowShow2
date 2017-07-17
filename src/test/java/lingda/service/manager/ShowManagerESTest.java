@@ -9,10 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -22,14 +24,24 @@ public class ShowManagerESTest {
     @Autowired
     private JestClientService jestClientService;
 
+    @Value("${elasticsearch.index.searchresult}")
+    private String INDEX_NAME;
+
+    @Value("${elasticsearch.type.searchresult}")
+    private String TYPE_NAME;
+
     @Before
     public void before() {
     }
 
     @Test
-    public void testCreateIndex() throws IOException {
-        JestResult jestResult = jestClientService.createIndex("test_index");
-        System.out.println(jestResult);
+    public void testCreateIndexIfNotExists() throws IOException {
+        jestClientService.createIndexIfNotExists("test_index");
+    }
+
+    @Test
+    public void testCreateMapping() throws IOException, URISyntaxException {
+        jestClientService.createIndexMapping("test_index", "test_mapping");
     }
 
     @Test
@@ -42,7 +54,16 @@ public class ShowManagerESTest {
 
     @Test
     public void testSearchDocuments() throws IOException {
-        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchFuzzy(TVShowSearchResult.class, ImmutableMap.of("englishName", "hero"), "searchresult", "tvshowsearchresult");
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryFuzzy(TVShowSearchResult.class, ImmutableMap.of("englishName", "hero"), "searchresult", "tvshowsearchresult");
+        for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
+            System.out.println(result.id);
+            System.out.println(result.source.getName());
+        }
+    }
+
+    @Test
+    public void testSearchDocumentsUsingPinyin() throws IOException {
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryMatch(TVShowSearchResult.class, ImmutableMap.of("name.pinyin", "yingxiong"), "searchresult", "tvshow");
         for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
             System.out.println(result.id);
             System.out.println(result.source.getName());
@@ -57,7 +78,7 @@ public class ShowManagerESTest {
 
     @Test
     public void testSearchShowResultByDetailUrl() throws IOException {
-        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, ImmutableMap.of("detailUrl", "http://www.meijutt.com/content/meiju20884.html"), "searchresult", "tvshowsearchresult");
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryMatchPhrase(TVShowSearchResult.class, ImmutableMap.of("detailUrl", "http://www.meijutt.com/content/meiju20884.html"), "searchresult", "tvshowsearchresult");
         for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
             System.out.println(result.id);
             System.out.println(result.source.getName());
@@ -66,7 +87,7 @@ public class ShowManagerESTest {
 
     @Test
     public void testSearchShowResultUsingChinsese() throws IOException {
-        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchFuzzy(TVShowSearchResult.class, ImmutableMap.of("name", "英雄"), "searchresult", "tvshowsearchresult");
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryFuzzy(TVShowSearchResult.class, ImmutableMap.of("name", "英雄"), "searchresult", "tvshowsearchresult");
         for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
             System.out.println(result.id);
             System.out.println(result.source.getName());

@@ -1,5 +1,6 @@
 package lingda.service.elasticsearch;
 
+import com.google.common.io.ByteStreams;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.JestResult;
@@ -9,36 +10,43 @@ import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import io.searchbox.indices.CreateIndex;
+import io.searchbox.indices.IndicesExists;
+import io.searchbox.indices.mapping.PutMapping;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.mapper.DocumentMapper;
+import org.elasticsearch.index.mapper.RootObjectMapper;
+import org.elasticsearch.index.mapper.StringFieldMapper;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.fuzzyQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhraseQuery;
-import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 @Service
 public class JestClientService implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static final Logger logger = LoggerFactory.getLogger(JestClientService.class);
     private JestClient client = null;
 
     @Value("${spring.elasticsearch.jest.uris}")
@@ -78,45 +86,74 @@ public class JestClientService implements Serializable {
     }
 
     /**
-     * Settings.Builder settingsBuilder = Settings.builder();
-     * settingsBuilder.put("number_of_shards",5);
-     * settingsBuilder.put("number_of_replicas",1);
-     * client.execute(new CreateIndex.Builder("articles").settings(settingsBuilder.build().getAsMap()).build());
-     *
      * @param indexName
      * @return
      * @throws IOException
      */
-    public JestResult createIndex(String indexName) throws IOException {
-        return client.execute(new CreateIndex.Builder(indexName).build());
+    public void createIndexIfNotExists(String indexName) throws IOException {
+//        this configuration is to use the ik and pinyin analyzer
+        /*
+        "index": {
+            "analysis": {
+                "analyzer": {
+                    "ik_pinyin_analyzer": {
+                        "type": "custom",
+                                "tokenizer": "ik_smart",
+                                "filter": ["my_pinyin", "word_delimiter"]
+                    }
+                },
+                "filter": {
+                    "my_pinyin": {
+                        "type": "pinyin",
+                                "first_letter": "prefix",
+                                "padding_char": " "
+                    }
+                }
+            }
+        }*/
+        boolean indexExists = client.execute(new IndicesExists.Builder(indexName).build()).isSucceeded();
+        if (!indexExists) {
+            logger.info("create elasticsearch index");
+            Settings.Builder settingsBuilder = Settings.builder();
+            settingsBuilder.put("index.analysis.analyzer.ik_pinyin_analyzer.type", "custom");
+            settingsBuilder.put("index.analysis.analyzer.ik_pinyin_analyzer.tokenizer", "ik_smart");
+            settingsBuilder.putArray("index.analysis.analyzer.ik_pinyin_analyzer.filter", "my_pinyin", "word_delimiter");
+            settingsBuilder.put("index.analysis.filter.my_pinyin.type", "pinyin");
+            settingsBuilder.put("index.analysis.filter.my_pinyin.first_letter", "prefix");
+            settingsBuilder.put("index.analysis.filter.my_pinyin.padding_char", " ");
+            JestResult jestResult = client.execute(new CreateIndex.Builder(indexName).settings(settingsBuilder.build().getAsMap()).build());
+            if (jestResult.getResponseCode() != 200) {
+                logger.error("fail to create elasticsearch index={}.  reason is {}", indexName, jestResult.getErrorMessage());
+            } else {
+                logger.info("succeed in creating elasticsearch index={}", indexName);
+            }
+        } else {
+            logger.info("index={} already exists in elasticsearch", indexName);
+        }
     }
 
-//    public JestResult createIndexMapping(String indexName){
-//        RootObjectMapper.Builder rootObjectMapperBuilder = new RootObjectMapper.Builder("my_mapping_name").add(
-//                new StringFieldMapper.Builder("message").store(true)
-//        );
-//        DocumentMapper documentMapper = new DocumentMapper.Builder("my_index", null, rootObjectMapperBuilder).build(null);
-//        String expectedMappingSource = documentMapper.mappingSource().toString();
-//        PutMapping putMapping = new PutMapping.Builder(
-//                "my_index",
-//                "my_type",
-//                expectedMappingSource
-//        ).build();
-//        client.execute(putMapping);
-//
-//    }
+    public void createIndexMapping(String indexName, String typeName) throws IOException, URISyntaxException {
+        Path path = Paths.get(ClassLoader.getSystemResource("es_config_json/mapping_searchresult_tvshow.json").toURI());
+        String mappingJson = new String(ByteStreams.toByteArray(new FileInputStream(path.toFile())));
+        JestResult result = client.execute(new PutMapping.Builder(indexName, typeName, mappingJson).build());
+        if (result.getResponseCode() != 200) {
+            logger.error("fail to create elasticsearch mapping for index={} type={}.  reason is {}", indexName, typeName, result.getErrorMessage());
+        } else {
+            logger.info("succeed in creating elasticsearch mapping for index={} type={}", indexName, typeName);
+        }
+    }
 
     public JestResult index(Object source, String indexName, String typeName) throws IOException {
         Index index = new Index.Builder(source).index(indexName).type(typeName).build();
         return client.execute(index);
     }
 
-    public <T> List<SearchResult.Hit<T, Void>> searchFuzzy(Class<T> clazz, Map<String, String> fieldValueMap, String indexName, String typeName) throws IOException {
+    public <T> List<SearchResult.Hit<T, Void>> searchBoolShouldQueryFuzzy(Class<T> clazz, Map<String, String> fieldValueMap, String indexName, String typeName) throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = boolQuery();
 
         for (Map.Entry<String, String> entry : fieldValueMap.entrySet()) {
-            boolQueryBuilder = boolQueryBuilder.must(fuzzyQuery(entry.getKey(), entry.getValue()).fuzziness(Fuzziness.TWO).prefixLength(2));
+            boolQueryBuilder = boolQueryBuilder.should(fuzzyQuery(entry.getKey(), entry.getValue()).fuzziness(Fuzziness.TWO).prefixLength(2));
         }
         searchSourceBuilder.query(boolQueryBuilder);
 
@@ -131,12 +168,32 @@ public class JestClientService implements Serializable {
         return result.getHits(clazz);
     }
 
-    public <T> List<SearchResult.Hit<T, Void>> search(Class<T> clazz, Map<String, String> fieldValueMap, String indexName, String typeName) throws IOException {
+    public <T> List<SearchResult.Hit<T, Void>> searchBoolShouldQueryMatchPhrase(Class<T> clazz, Map<String, String> fieldValueMap, String indexName, String typeName) throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = boolQuery();
 
         for (Map.Entry<String, String> entry : fieldValueMap.entrySet()) {
-            boolQueryBuilder = boolQueryBuilder.must(matchPhraseQuery(entry.getKey(), entry.getValue()));
+            boolQueryBuilder = boolQueryBuilder.should(matchPhraseQuery(entry.getKey(), entry.getValue()));
+        }
+        searchSourceBuilder.query(boolQueryBuilder);
+
+        Search search = new Search.Builder(searchSourceBuilder.toString())
+                // multiple index or types can be added.
+                .addIndex(indexName)
+                .addType(typeName)
+                .build();
+
+        SearchResult result = client.execute(search);
+
+        return result.getHits(clazz);
+    }
+
+    public <T> List<SearchResult.Hit<T, Void>> searchBoolShouldQueryMatch(Class<T> clazz, Map<String, String> fieldValueMap, String indexName, String typeName) throws IOException {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = boolQuery();
+
+        for (Map.Entry<String, String> entry : fieldValueMap.entrySet()) {
+            boolQueryBuilder = boolQueryBuilder.should(matchQuery(entry.getKey(), entry.getValue()));
         }
         searchSourceBuilder.query(boolQueryBuilder);
 

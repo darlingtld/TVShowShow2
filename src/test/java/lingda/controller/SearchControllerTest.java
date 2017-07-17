@@ -39,4 +39,11 @@ public class SearchControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("英雄")));
     }
+
+    @Test
+    public void shouldReturnSearchResultUsingPinyin() throws Exception {
+        this.mockMvc.perform(post("/search/show").accept(MediaType.APPLICATION_JSON).content("{\"term\":\"yingxiong\"}")
+                .contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("英雄")));
+    }
 }

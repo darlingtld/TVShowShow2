@@ -12,6 +12,7 @@ import lingda.service.manager.ShowManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -26,10 +27,13 @@ import java.util.Map;
 @Service
 public class ShowManagerDBImpl implements ShowManager {
 
-    private static final String INDEX_NAME_TVSHOWSEARCHRESULT = "searchresult";
-    private static final String TYPE_NAME_TVSHOWSEARCHRESULT = "tvshowsearchresult";
-
     private static final Logger logger = LoggerFactory.getLogger(ShowManagerDBImpl.class);
+
+    @Value("${elasticsearch.index.searchresult}")
+    private String INDEX_NAME_TVSHOWSEARCHRESULT;
+
+    @Value("${elasticsearch.type.searchresult}")
+    private String TYPE_NAME_TVSHOWSEARCHRESULT ;
 
     @Autowired
     private TVShowRepository tvShowRepository;
@@ -88,9 +92,11 @@ public class ShowManagerDBImpl implements ShowManager {
     }
 
     @Override
-    public List<TVShowSearchResult> searchBySearchTermFromES(String key, SearchTerm searchTerm) {
+    public List<TVShowSearchResult> searchBySearchTermFromES(SearchTerm searchTerm) {
         try {
-            List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchFuzzy(TVShowSearchResult.class, ImmutableMap.of(key, searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
+            List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryFuzzy(TVShowSearchResult.class, ImmutableMap.of("name", searchTerm.getTerm(), "englishName", searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
+            List<SearchResult.Hit<TVShowSearchResult, Void>> pinyinResultList = jestClientService.searchBoolShouldQueryMatch(TVShowSearchResult.class, ImmutableMap.of("name.pinyin", searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
+            resultList.addAll(pinyinResultList);
             List<TVShowSearchResult> tvShowSearchResultList = new ArrayList<>();
             for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
                 logger.info("[name]:{} [socre]:{}", result.source.getName(), result.score);
@@ -106,7 +112,7 @@ public class ShowManagerDBImpl implements ShowManager {
     @Override
     public TVShowSearchResult searchTVShowSearchResult(Map<String, String> fieldValueMap) {
         try {
-            List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.search(TVShowSearchResult.class, fieldValueMap, INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
+            List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryMatchPhrase(TVShowSearchResult.class, fieldValueMap, INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
             if (!resultList.isEmpty()) {
                 return resultList.get(0).source;
             } else {

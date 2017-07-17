@@ -27,7 +27,7 @@ public interface ShowManager {
 
     TVShowSearchResult getFromES(String id);
 
-    List<TVShowSearchResult> searchBySearchTermFromES(String key, SearchTerm searchTerm);
+    List<TVShowSearchResult> searchBySearchTermFromES(SearchTerm searchTerm);
 
     TVShowSearchResult searchTVShowSearchResult(Map<String, String> fieldValueMap);
 }
