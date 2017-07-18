@@ -59,18 +59,18 @@ public class SearchResultCache {
                                 List<TVShowSearchResult> searchResultESList = showManagerDBImpl.searchBySearchTermFromES(searchTerm);
                                 searchResultESList.forEach(searchResult -> logger.info("[result from ES]:{}", searchResult));
                                 resultList.addAll(searchResultESList);
-//                                if (!resultList.isEmpty()) {
-//                                    logger.info("elasticsearch returns some results.  spawn a thread to update the search result");
-////                                    return the result and spawn a thread to update the search result
-//                                    threadPoolExecutor.submit(() -> {
-//                                        List<TVShowSearchResult> meijuttSearchResultList = showCrawlerMeijutt.search(searchTerm);
-////                                diff the searchFuzzy result from internet and elasticsearch.  save the new result to ES.
-//                                        meijuttSearchResultList.removeAll(searchResultESList);
-//                                        meijuttSearchResultList.forEach(searchResult -> showManagerDBImpl.saveToES(searchResult));
-//                                        resultList.addAll(meijuttSearchResultList);
-//                                    });
-//                                    return resultList;
-//                                } else {
+                                if (!resultList.isEmpty()) {
+                                    logger.info("elasticsearch returns some results.  spawn a thread to update the search result");
+//                                    return the result and spawn a thread to update the search result
+                                    threadPoolExecutor.submit(() -> {
+                                        List<TVShowSearchResult> meijuttSearchResultList = showCrawlerMeijutt.search(searchTerm);
+//                                diff the searchFuzzy result from internet and elasticsearch.  save the new result to ES.
+                                        meijuttSearchResultList.removeAll(searchResultESList);
+                                        meijuttSearchResultList.forEach(searchResult -> showManagerDBImpl.saveToES(searchResult));
+                                        resultList.addAll(meijuttSearchResultList);
+                                    });
+                                    return resultList;
+                                } else {
                                     logger.info("elasticsearch returns empty results.  try search online");
 //                                    a synchronous operation
                                     List<TVShowSearchResult> meijuttSearchResultList = showCrawlerMeijutt.search(searchTerm);
@@ -78,7 +78,7 @@ public class SearchResultCache {
 //                                merge the two result list
                                     resultList.addAll(meijuttSearchResultList);
                                     return resultList;
-//                                }
+                                }
                             }
                         });
     }

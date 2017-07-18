@@ -63,7 +63,7 @@ public class ShowManagerESTest {
 
     @Test
     public void testSearchDocumentsUsingPinyin() throws IOException {
-        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryMatch(TVShowSearchResult.class, ImmutableMap.of("name.pinyin", "yingxiong"), INDEX_NAME, TYPE_NAME);
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryMatchPhrase(TVShowSearchResult.class, ImmutableMap.of("name.pinyin", "xuezu"), INDEX_NAME, TYPE_NAME);
         for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
             System.out.println(result.id);
             System.out.println(result.source.getName());

@@ -123,7 +123,7 @@ public class TVShowSearchResult {
         return "TVShowSearchResult{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
+                ", description='" + description.substring(0, Math.min(50, description.length())) + '\'' +
                 ", englishName='" + englishName + '\'' +
                 ", tvSource='" + tvSource + '\'' +
                 ", year=" + year +

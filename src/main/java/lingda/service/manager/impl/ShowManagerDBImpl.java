@@ -95,7 +95,7 @@ public class ShowManagerDBImpl implements ShowManager {
     public List<TVShowSearchResult> searchBySearchTermFromES(SearchTerm searchTerm) {
         try {
             List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryFuzzy(TVShowSearchResult.class, ImmutableMap.of("name", searchTerm.getTerm(), "englishName", searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
-            List<SearchResult.Hit<TVShowSearchResult, Void>> pinyinResultList = jestClientService.searchBoolShouldQueryMatch(TVShowSearchResult.class, ImmutableMap.of("name.pinyin", searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
+            List<SearchResult.Hit<TVShowSearchResult, Void>> pinyinResultList = jestClientService.searchBoolShouldQueryMatchPhrase(TVShowSearchResult.class, ImmutableMap.of("name.pinyin", searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
             resultList.addAll(pinyinResultList);
             List<TVShowSearchResult> tvShowSearchResultList = new ArrayList<>();
             for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
