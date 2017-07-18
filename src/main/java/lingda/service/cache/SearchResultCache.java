@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,6 +32,13 @@ public class SearchResultCache {
     private static final Logger logger = LoggerFactory.getLogger(SearchResultCache.class);
 
     private static LoadingCache<SearchTerm, List<TVShowSearchResult>> searchTermLoadingCache;
+
+    private static final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+            Runtime.getRuntime().availableProcessors() + 1,
+            Runtime.getRuntime().availableProcessors() + 10,
+            60,
+            TimeUnit.SECONDS,
+            new ArrayBlockingQueue<Runnable>(10));
 
     @Autowired
     private ShowCrawler showCrawlerMeijutt;
@@ -48,19 +59,31 @@ public class SearchResultCache {
                                 List<TVShowSearchResult> searchResultESList = showManagerDBImpl.searchBySearchTermFromES(searchTerm);
                                 searchResultESList.forEach(searchResult -> logger.info("[result from ES]:{}", searchResult));
                                 resultList.addAll(searchResultESList);
-//                                searchFuzzy from online
-                                List<TVShowSearchResult> meijuttSearchResultList = showCrawlerMeijutt.search(searchTerm);
-//                                diff the searchFuzzy result from internet and elasticsearch.  save the new result to ES.
-                                meijuttSearchResultList.removeAll(searchResultESList);
-                                meijuttSearchResultList.forEach(searchResult -> showManagerDBImpl.saveToES(searchResult));
+//                                if (!resultList.isEmpty()) {
+//                                    logger.info("elasticsearch returns some results.  spawn a thread to update the search result");
+////                                    return the result and spawn a thread to update the search result
+//                                    threadPoolExecutor.submit(() -> {
+//                                        List<TVShowSearchResult> meijuttSearchResultList = showCrawlerMeijutt.search(searchTerm);
+////                                diff the searchFuzzy result from internet and elasticsearch.  save the new result to ES.
+//                                        meijuttSearchResultList.removeAll(searchResultESList);
+//                                        meijuttSearchResultList.forEach(searchResult -> showManagerDBImpl.saveToES(searchResult));
+//                                        resultList.addAll(meijuttSearchResultList);
+//                                    });
+//                                    return resultList;
+//                                } else {
+                                    logger.info("elasticsearch returns empty results.  try search online");
+//                                    a synchronous operation
+                                    List<TVShowSearchResult> meijuttSearchResultList = showCrawlerMeijutt.search(searchTerm);
+                                    meijuttSearchResultList.forEach(searchResult -> showManagerDBImpl.saveToES(searchResult));
 //                                merge the two result list
-                                resultList.addAll(meijuttSearchResultList);
-                                return resultList;
+                                    resultList.addAll(meijuttSearchResultList);
+                                    return resultList;
+//                                }
                             }
                         });
     }
 
-    public List<TVShowSearchResult> get(SearchTerm searchTerm) {
+    public List<TVShowSearchResult> getOrSearchOnline(SearchTerm searchTerm) {
         return searchTermLoadingCache.getUnchecked(searchTerm);
     }
 }

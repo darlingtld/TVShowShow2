@@ -1,7 +1,7 @@
 {
   "properties": {
     "name": {
-      "type": "keyword",
+      "type": "text",
       "fields": {
         "pinyin": {
           "type": "text",
@@ -12,11 +12,13 @@
       }
     },
     "englishName": {
-      "type": "keyword",
+      "type": "text",
       "fields": {
         "pinyin": {
           "type": "text",
-          "store": "no"
+          "store": "no",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "ik_pinyin_analyzer"
         }
       }
     },
@@ -34,11 +36,9 @@
     "tvSource": {
       "type": "text",
       "fields": {
-        "pinyin": {
-          "type": "text",
-          "store": "no",
-          "term_vector": "with_positions_offsets",
-          "analyzer": "ik_pinyin_analyzer"
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
         }
       }
     },
@@ -46,18 +46,16 @@
       "type": "integer"
     },
     "status": {
-      "type": "keyword",
+      "type": "text",
       "fields": {
-        "pinyin": {
-          "type": "text",
-          "store": "no",
-          "term_vector": "with_positions_offsets",
-          "analyzer": "ik_pinyin_analyzer"
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
         }
       }
     },
     "category": {
-      "type": "keyword",
+      "type": "text",
       "fields": {
         "pinyin": {
           "type": "text",
@@ -74,10 +72,22 @@
       "type": "integer"
     },
     "detailUrl": {
-      "type": "text"
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
     },
     "imgUrl": {
-      "type": "text"
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
     }
   }
 }

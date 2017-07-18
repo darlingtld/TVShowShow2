@@ -99,7 +99,7 @@ public class ShowManagerDBImpl implements ShowManager {
             resultList.addAll(pinyinResultList);
             List<TVShowSearchResult> tvShowSearchResultList = new ArrayList<>();
             for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
-                logger.info("[name]:{} [socre]:{}", result.source.getName(), result.score);
+                logger.info("[name]:{} [score]:{}", result.source.getName(), result.score);
                 tvShowSearchResultList.add(result.source);
             }
             return tvShowSearchResultList;

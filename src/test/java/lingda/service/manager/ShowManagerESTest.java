@@ -54,7 +54,7 @@ public class ShowManagerESTest {
 
     @Test
     public void testSearchDocuments() throws IOException {
-        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryFuzzy(TVShowSearchResult.class, ImmutableMap.of("englishName", "hero"), "searchresult", "tvshowsearchresult");
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryFuzzy(TVShowSearchResult.class, ImmutableMap.of("name", "hero", "englishName", "hero"), INDEX_NAME, TYPE_NAME);
         for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
             System.out.println(result.id);
             System.out.println(result.source.getName());
@@ -63,7 +63,7 @@ public class ShowManagerESTest {
 
     @Test
     public void testSearchDocumentsUsingPinyin() throws IOException {
-        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryMatch(TVShowSearchResult.class, ImmutableMap.of("name.pinyin", "yingxiong"), "searchresult", "tvshow");
+        List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryMatch(TVShowSearchResult.class, ImmutableMap.of("name.pinyin", "yingxiong"), INDEX_NAME, TYPE_NAME);
         for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
             System.out.println(result.id);
             System.out.println(result.source.getName());

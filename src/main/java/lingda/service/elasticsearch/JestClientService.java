@@ -156,7 +156,7 @@ public class JestClientService implements Serializable {
             boolQueryBuilder = boolQueryBuilder.should(fuzzyQuery(entry.getKey(), entry.getValue()).fuzziness(Fuzziness.TWO).prefixLength(2));
         }
         searchSourceBuilder.query(boolQueryBuilder);
-
+        logger.debug("[elasticsearch query]:{}", searchSourceBuilder.toString());
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.
                 .addIndex(indexName)
@@ -176,7 +176,7 @@ public class JestClientService implements Serializable {
             boolQueryBuilder = boolQueryBuilder.should(matchPhraseQuery(entry.getKey(), entry.getValue()));
         }
         searchSourceBuilder.query(boolQueryBuilder);
-
+        logger.debug("[elasticsearch query]:{}", searchSourceBuilder.toString());
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.
                 .addIndex(indexName)
@@ -196,7 +196,7 @@ public class JestClientService implements Serializable {
             boolQueryBuilder = boolQueryBuilder.should(matchQuery(entry.getKey(), entry.getValue()));
         }
         searchSourceBuilder.query(boolQueryBuilder);
-
+        logger.debug("[elasticsearch query]:{}", searchSourceBuilder.toString());
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.
                 .addIndex(indexName)
