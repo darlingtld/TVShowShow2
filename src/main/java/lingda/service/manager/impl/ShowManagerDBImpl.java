@@ -33,7 +33,7 @@ public class ShowManagerDBImpl implements ShowManager {
     private String INDEX_NAME_TVSHOWSEARCHRESULT;
 
     @Value("${elasticsearch.type.searchresult}")
-    private String TYPE_NAME_TVSHOWSEARCHRESULT ;
+    private String TYPE_NAME_TVSHOWSEARCHRESULT;
 
     @Autowired
     private TVShowRepository tvShowRepository;
@@ -97,6 +97,13 @@ public class ShowManagerDBImpl implements ShowManager {
             List<SearchResult.Hit<TVShowSearchResult, Void>> resultList = jestClientService.searchBoolShouldQueryFuzzy(TVShowSearchResult.class, ImmutableMap.of("name", searchTerm.getTerm(), "englishName", searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
             List<SearchResult.Hit<TVShowSearchResult, Void>> pinyinResultList = jestClientService.searchBoolShouldQueryMatchPhrase(TVShowSearchResult.class, ImmutableMap.of("name.pinyin", searchTerm.getTerm()), INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
             resultList.addAll(pinyinResultList);
+            resultList.sort((o1, o2) -> {
+                if (o1.score > o2.score) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
             List<TVShowSearchResult> tvShowSearchResultList = new ArrayList<>();
             for (SearchResult.Hit<TVShowSearchResult, Void> result : resultList) {
                 logger.info("[name]:{} [score]:{}", result.source.getName(), result.score);
