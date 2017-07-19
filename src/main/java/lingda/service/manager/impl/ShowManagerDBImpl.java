@@ -3,11 +3,15 @@ package lingda.service.manager.impl;
 import com.google.common.collect.ImmutableMap;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.SearchResult;
+import lingda.dao.RatingRepository;
 import lingda.dao.TVShowRepository;
-import lingda.model.dto.Rating;
+import lingda.model.dto.DoubanDTO;
+import lingda.model.dto.RatingDTO;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
+import lingda.model.pojo.Rating;
 import lingda.model.pojo.TVShow;
+import lingda.service.crawler.RatingCrawler;
 import lingda.service.elasticsearch.JestClientService;
 import lingda.service.manager.ShowManager;
 import org.slf4j.Logger;
@@ -15,10 +19,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +36,7 @@ import java.util.Map;
  * Created by lingda on 24/03/2017.
  */
 @Service
+@Transactional
 public class ShowManagerDBImpl implements ShowManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ShowManagerDBImpl.class);
@@ -36,13 +47,17 @@ public class ShowManagerDBImpl implements ShowManager {
     @Value("${elasticsearch.type.searchresult}")
     private String TYPE_NAME_TVSHOWSEARCHRESULT;
 
-
-
     @Autowired
     private TVShowRepository tvShowRepository;
 
     @Autowired
+    private RatingRepository ratingRepository;
+
+    @Autowired
     private JestClientService jestClientService;
+
+    @Autowired
+    private RatingCrawler ratingCrawlerDoubanImpl;
 
     @Override
     public List<TVShow> getShowList(String name) {
@@ -135,8 +150,27 @@ public class ShowManagerDBImpl implements ShowManager {
     }
 
     @Override
-    public Rating getRatingFromDouban(String showName) {
-        return null;
+    public RatingDTO getRatingFromDouban(String showName, String englishName) {
+        logger.info("get rating from douban for {} {}", showName, englishName);
+//        check if it already exists and the lastUpdate is reasonable(within 24 hours)
+        Rating rating = ratingRepository.findByName(showName);
+        if (rating != null && rating.getLastUpdate().toInstant().plus(1, ChronoUnit.DAYS).isAfter(Instant.now())) {
+            return new RatingDTO(rating);
+        } else {
+//        insert or update the rating if necessary
+            DoubanDTO doubanDTO = ratingCrawlerDoubanImpl.searchRatingByName(showName);
+            RatingDTO ratingDTO = doubanDTO.getRatingDTO();
+            if (rating == null) {
+                rating = new Rating(showName, englishName, doubanDTO.getDoubanId(), ratingDTO.getMax(), ratingDTO.getAverage(), ratingDTO.getMin(), ratingDTO.getStars(), new Date());
+            } else {
+                rating.setMax(ratingDTO.getMax());
+                rating.setAverage(ratingDTO.getAverage());
+                rating.setStars(ratingDTO.getStars());
+                rating.setMin(ratingDTO.getMin());
+                rating.setLastUpdate(new Date());
+            }
+            ratingRepository.save(rating);
+            return ratingDTO;
+        }
     }
-
 }

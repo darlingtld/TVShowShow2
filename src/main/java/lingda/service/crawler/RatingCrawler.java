@@ -1,12 +1,12 @@
 package lingda.service.crawler;
 
-import lingda.model.dto.Rating;
+import lingda.model.dto.DoubanDTO;
 
 /**
  * Created by lingda on 18/07/2017.
  */
 public interface RatingCrawler {
 
-    Rating searchRatingByName(String name);
+    DoubanDTO searchRatingByName(String name);
 
 }

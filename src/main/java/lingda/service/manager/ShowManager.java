@@ -1,6 +1,6 @@
 package lingda.service.manager;
 
-import lingda.model.dto.Rating;
+import lingda.model.dto.RatingDTO;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
@@ -31,5 +31,5 @@ public interface ShowManager {
 
     TVShowSearchResult searchTVShowSearchResult(Map<String, String> fieldValueMap);
 
-    Rating getRatingFromDouban(String showName);
+    RatingDTO getRatingFromDouban(String showName, String englishName);
 }

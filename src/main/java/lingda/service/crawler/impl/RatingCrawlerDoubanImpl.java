@@ -2,7 +2,8 @@ package lingda.service.crawler.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lingda.model.dto.Rating;
+import lingda.model.dto.DoubanDTO;
+import lingda.model.dto.RatingDTO;
 import lingda.service.crawler.RatingCrawler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -32,7 +33,7 @@ public class RatingCrawlerDoubanImpl implements RatingCrawler {
     private String DOUBAN_MOVIE_API;
 
     @Override
-    public Rating searchRatingByName(String name) {
+    public DoubanDTO searchRatingByName(String name) {
         try {
             logger.info("searching douban rating for {}", name);
             Document document = Jsoup.connect(DOUBAN_SEARCHURL + name).get();
@@ -49,7 +50,8 @@ public class RatingCrawlerDoubanImpl implements RatingCrawler {
                         ObjectMapper objectMapper = new ObjectMapper();
                         //convert json string to object
                         JsonNode jsonNode = objectMapper.readTree(json);
-                        return objectMapper.readValue(jsonNode.get("rating").toString(), Rating.class);
+                        RatingDTO ratingDTO = objectMapper.readValue(jsonNode.get("rating").toString(), RatingDTO.class);
+                        return new DoubanDTO(id, ratingDTO);
                     }
                 }
             }

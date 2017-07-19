@@ -1,5 +1,6 @@
 package lingda.service.manager;
 
+import lingda.model.dto.RatingDTO;
 import lingda.model.pojo.TVShow;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
+//@Transactional
 public class ShowManagerTest {
 
     @Autowired
@@ -40,8 +41,14 @@ public class ShowManagerTest {
     }
 
     @Test
-    public void shouldGetLatestListPerShow(){
+    public void shouldGetLatestListPerShow() {
         List<TVShow> showList = showManager.getLatestListPerShow();
         System.out.println(showList);
+    }
+
+    @Test
+    public void shouldUpsertRating() {
+        RatingDTO ratingDTO = showManager.getRatingFromDouban("英雄第二季", "Hero Season 1");
+        System.out.println(ratingDTO);
     }
 }
