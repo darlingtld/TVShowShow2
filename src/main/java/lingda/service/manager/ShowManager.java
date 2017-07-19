@@ -1,6 +1,6 @@
 package lingda.service.manager;
 
-import com.google.common.collect.ImmutableMap;
+import lingda.model.dto.Rating;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
@@ -30,4 +30,6 @@ public interface ShowManager {
     List<TVShowSearchResult> searchBySearchTermFromES(SearchTerm searchTerm);
 
     TVShowSearchResult searchTVShowSearchResult(Map<String, String> fieldValueMap);
+
+    Rating getRatingFromDouban(String showName);
 }

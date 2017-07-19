@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.SearchResult;
 import lingda.dao.TVShowRepository;
+import lingda.model.dto.Rating;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
@@ -34,6 +35,8 @@ public class ShowManagerDBImpl implements ShowManager {
 
     @Value("${elasticsearch.type.searchresult}")
     private String TYPE_NAME_TVSHOWSEARCHRESULT;
+
+
 
     @Autowired
     private TVShowRepository tvShowRepository;
@@ -129,6 +132,11 @@ public class ShowManagerDBImpl implements ShowManager {
             logger.error("error occurs in searching detailUrl From ES.  reason is {}", e.getMessage(), e);
             return null;
         }
+    }
+
+    @Override
+    public Rating getRatingFromDouban(String showName) {
+        return null;
     }
 
 }

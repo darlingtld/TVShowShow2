@@ -2,6 +2,7 @@ package lingda.controller;
 
 import com.google.common.collect.ImmutableMap;
 import lingda.model.dto.DownLoadLink;
+import lingda.model.dto.Rating;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
 import lingda.service.crawler.ShowCrawler;
@@ -40,5 +41,10 @@ public class ShowController {
     @GetMapping("/tvshow")
     public TVShowSearchResult getTVShow(@RequestParam("detailUrl") String detailUrl) {
         return showManager.searchTVShowSearchResult(ImmutableMap.of("detailUrl", detailUrl));
+    }
+
+    @GetMapping("/rating/douban")
+    public Rating getRatingFromDouban(@RequestParam("showName") String showName) {
+        return showManager.getRatingFromDouban(showName);
     }
 }

@@ -1,6 +1,7 @@
 package lingda.service.crawler;
 
 import lingda.model.dto.DownLoadLink;
+import lingda.model.dto.Rating;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
