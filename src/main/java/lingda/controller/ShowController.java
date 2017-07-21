@@ -44,7 +44,7 @@ public class ShowController {
     }
 
     @GetMapping("/rating/douban")
-    public RatingDTO getRatingFromDouban(@RequestParam("name") String showName, @RequestParam("englishName") String englishName) {
+    public RatingDTO getRatingFromDouban(@RequestParam("name") String showName, @RequestParam(value = "englishName", required = false) String englishName) {
         return showManager.getRatingFromDouban(showName, englishName);
     }
 }

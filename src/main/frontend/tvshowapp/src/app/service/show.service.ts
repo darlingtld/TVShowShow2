@@ -6,6 +6,7 @@ import {Tvshow} from '../model/tvshow';
 import {Observable} from 'rxjs/Observable';
 import {Downloadlink} from '../model/downloadlink';
 import {TvshowSearchResult} from '../model/tvshow-search-result';
+import {Rating} from '../model/rating';
 
 @Injectable()
 export class ShowService {
@@ -34,6 +35,16 @@ export class ShowService {
     search.set('detailUrl', detailUrl);
     return this.http.get(showDetailUrl, {search}).toPromise()
       .then(response => response.json() as TvshowSearchResult)
+      .catch(this.handleError);
+  }
+
+  getTvshowDoubanRating(name: string, englishName: string): Promise<Rating> {
+    const showRatingUrl = `${this.showUrl}/rating/douban`;
+    const search = new URLSearchParams();
+    search.set('name', name);
+    search.set('englishName', englishName);
+    return this.http.get(showRatingUrl, {search}).toPromise()
+      .then(response => response.json() as Rating)
       .catch(this.handleError);
   }
 
