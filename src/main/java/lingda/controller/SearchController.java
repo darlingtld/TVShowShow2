@@ -1,5 +1,6 @@
 package lingda.controller;
 
+import lingda.model.dto.MovieSearchResult;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.service.search.SearchService;
@@ -28,8 +29,8 @@ public class SearchController {
     }
 
     @PostMapping("/movie")
-    public List<TVShowSearchResult> searchMovie(@RequestBody SearchTerm searchTerm) {
-        return Collections.emptyList();
+    public List<MovieSearchResult> searchMovie(@RequestBody SearchTerm searchTerm) {
+        return searchService.searchMovie(searchTerm);
     }
 
     @PostMapping("/variety")

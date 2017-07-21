@@ -6,8 +6,6 @@ import com.google.common.cache.LoadingCache;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.service.crawler.ShowCrawler;
-import lingda.service.crawler.impl.ShowCrawlerMeijuttImpl;
-import lingda.service.elasticsearch.JestClientService;
 import lingda.service.manager.ShowManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +16,6 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -31,14 +27,14 @@ public class SearchResultCache {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchResultCache.class);
 
-    private static LoadingCache<SearchTerm, List<TVShowSearchResult>> searchTermLoadingCache;
+    private static LoadingCache<SearchTerm, List<TVShowSearchResult>> tvShowSearchTermLoadingCache;
 
     private static final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
             Runtime.getRuntime().availableProcessors() + 1,
             Runtime.getRuntime().availableProcessors() + 10,
             60,
             TimeUnit.SECONDS,
-            new ArrayBlockingQueue<Runnable>(10));
+            new ArrayBlockingQueue<>(10));
 
     @Autowired
     private ShowCrawler showCrawlerMeijutt;
@@ -48,7 +44,7 @@ public class SearchResultCache {
 
     @PostConstruct
     private void postConstruct() {
-        searchTermLoadingCache = CacheBuilder.newBuilder()
+        tvShowSearchTermLoadingCache = CacheBuilder.newBuilder()
                 .maximumSize(1000)
                 .expireAfterWrite(10, TimeUnit.MINUTES)
                 .build(
@@ -83,7 +79,7 @@ public class SearchResultCache {
                         });
     }
 
-    public List<TVShowSearchResult> getOrSearchOnline(SearchTerm searchTerm) {
-        return searchTermLoadingCache.getUnchecked(searchTerm);
+    public List<TVShowSearchResult> getTVShowOrSearchOnline(SearchTerm searchTerm) {
+        return tvShowSearchTermLoadingCache.getUnchecked(searchTerm);
     }
 }

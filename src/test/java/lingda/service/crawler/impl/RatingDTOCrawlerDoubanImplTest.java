@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,7 +30,7 @@ public class RatingDTOCrawlerDoubanImplTest {
 
     @Test
     public void shouldGetRating() {
-        DoubanDTO doubanDTO =  ratingCrawlerDoubanImpl.searchRatingByName("英雄第一季");
+        Optional<DoubanDTO> doubanDTO =  ratingCrawlerDoubanImpl.searchRatingByName("英雄第一季");
         System.out.println(doubanDTO);
     }
 

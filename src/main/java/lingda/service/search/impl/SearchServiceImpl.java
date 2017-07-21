@@ -1,5 +1,6 @@
 package lingda.service.search.impl;
 
+import lingda.model.dto.MovieSearchResult;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.service.cache.SearchResultCache;
@@ -27,12 +28,19 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<TVShowSearchResult> searchTVShow(SearchTerm searchTerm) {
-        logger.debug("search tv show with search term {}", searchTerm);
-//        searchFuzzy the searchFuzzy result list from meijutt
+        logger.info("search tvshow with search term {}", searchTerm);
+//        search result list from meijutt
 //        use 'new ArrayList()' to avoid ConcurrentModificationException when sorting a list in Java 8
-        List<TVShowSearchResult> tvShowSearchResultList = new ArrayList<>(searchResultCache.getOrSearchOnline(searchTerm));
+        List<TVShowSearchResult> tvShowSearchResultList = new ArrayList<>(searchResultCache.getTVShowOrSearchOnline(searchTerm));
         tvShowSearchResultList.sort(searchResultComparator(searchTerm));
         return tvShowSearchResultList;
+    }
+
+    @Override
+    public List<MovieSearchResult> searchMovie(SearchTerm searchTerm) {
+        logger.info("search movie with search term {}", searchTerm);
+
+        return null;
     }
 
     //    TODO optimize the algorithm to order the searchFuzzy results

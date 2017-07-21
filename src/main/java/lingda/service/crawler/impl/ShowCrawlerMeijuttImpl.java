@@ -36,10 +36,10 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
 
     private static final Logger logger = LoggerFactory.getLogger(ShowCrawlerMeijuttImpl.class);
 
-    @Value("${site.meijutt}")
+    @Value("${site.tvshow.meijutt}")
     private String site;
 
-    @Value("${site.meijutt.searchurl}")
+    @Value("${site.tvshow.meijutt.searchurl}")
     private String searchUrl;
 
     @Autowired
