@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +34,7 @@ public class RatingCrawlerDoubanImpl implements RatingCrawler {
     private String DOUBAN_MOVIE_API;
 
     @Override
-    public DoubanDTO searchRatingByName(String name) {
+    public Optional<DoubanDTO> searchRatingByName(String name) {
         try {
             logger.info("searching douban rating for {}", name);
             Document document = Jsoup.connect(DOUBAN_SEARCHURL + name).get();
@@ -51,13 +52,13 @@ public class RatingCrawlerDoubanImpl implements RatingCrawler {
                         //convert json string to object
                         JsonNode jsonNode = objectMapper.readTree(json);
                         RatingDTO ratingDTO = objectMapper.readValue(jsonNode.get("rating").toString(), RatingDTO.class);
-                        return new DoubanDTO(id, ratingDTO);
+                        return Optional.of(new DoubanDTO(id, ratingDTO));
                     }
                 }
             }
         } catch (IOException e) {
             logger.error("error occurs in searching douban rating for {}.  reason is {}", name, e.getMessage(), e);
         }
-        return null;
+        return Optional.empty();
     }
 }

@@ -24,10 +24,15 @@
   display: flex;
 }
 
-.search-result-pic{
+.search-result-pic {
   margin-right: 10px;
 }
+
 .search-result-pic > img {
   width: 100px;
   height: 140px;
+}
+
+span.rating {
+  font-size: small;
 }

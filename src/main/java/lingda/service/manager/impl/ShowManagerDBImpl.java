@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by lingda on 24/03/2017.
@@ -158,19 +159,23 @@ public class ShowManagerDBImpl implements ShowManager {
             return new RatingDTO(rating);
         } else {
 //        insert or update the rating if necessary
-            DoubanDTO doubanDTO = ratingCrawlerDoubanImpl.searchRatingByName(showName);
-            RatingDTO ratingDTO = doubanDTO.getRatingDTO();
-            if (rating == null) {
-                rating = new Rating(showName, englishName, doubanDTO.getDoubanId(), ratingDTO.getMax(), ratingDTO.getAverage(), ratingDTO.getMin(), ratingDTO.getStars(), new Date());
+            Optional<DoubanDTO> doubanDTO = ratingCrawlerDoubanImpl.searchRatingByName(showName);
+            if (doubanDTO.isPresent()) {
+                RatingDTO ratingDTO = doubanDTO.get().getRatingDTO();
+                if (rating == null) {
+                    rating = new Rating(showName, englishName, doubanDTO.get().getDoubanId(), ratingDTO.getMax(), ratingDTO.getAverage(), ratingDTO.getMin(), ratingDTO.getStars(), new Date());
+                } else {
+                    rating.setMax(ratingDTO.getMax());
+                    rating.setAverage(ratingDTO.getAverage());
+                    rating.setStars(ratingDTO.getStars());
+                    rating.setMin(ratingDTO.getMin());
+                    rating.setLastUpdate(new Date());
+                }
+                ratingRepository.save(rating);
+                return ratingDTO;
             } else {
-                rating.setMax(ratingDTO.getMax());
-                rating.setAverage(ratingDTO.getAverage());
-                rating.setStars(ratingDTO.getStars());
-                rating.setMin(ratingDTO.getMin());
-                rating.setLastUpdate(new Date());
+                return null;
             }
-            ratingRepository.save(rating);
-            return ratingDTO;
         }
     }
 }

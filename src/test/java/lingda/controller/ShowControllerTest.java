@@ -28,7 +28,7 @@ public class ShowControllerTest {
 
     @Test
     public void shouldReturnSearchResult() throws Exception {
-        this.mockMvc.perform(get("/show/rating/douban").param("name", "血族第一季").param("englishName", "The Strain Season 1")
+        this.mockMvc.perform(get("/show/rating/douban").param("name", "英雄重生第一季").param("englishName", "The Strain Season 1")
                 .contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("average")));
     }
