@@ -17,10 +17,13 @@ import java.net.URISyntaxException;
 public class TVShowApplication {
 
     @Value("${elasticsearch.index.searchresult}")
-    private String INDEX_NAME_TVSHOWSEARCHRESULT;
+    private String INDEX_NAME_SEARCHRESULT;
 
-    @Value("${elasticsearch.type.searchresult}")
+    @Value("${elasticsearch.type.tvshowsearchresult}")
     private String TYPE_NAME_TVSHOWSEARCHRESULT;
+
+    @Value("${elasticsearch.type.moviesearchresult}")
+    private String TYPE_NAME_MOVIESEARCHRESULT;
 
     @Autowired
     private JestClientService jestClientService;
@@ -34,8 +37,10 @@ public class TVShowApplication {
     @EventListener(ApplicationReadyEvent.class)
     private void createElasticsearchIndexIfNotExists() throws IOException, URISyntaxException {
         logger.info("set up the elasticsearch indices and mappings");
-        jestClientService.createIndexIfNotExists(INDEX_NAME_TVSHOWSEARCHRESULT);
-        jestClientService.createIndexMapping(INDEX_NAME_TVSHOWSEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT);
+        jestClientService.createIndexIfNotExists(INDEX_NAME_SEARCHRESULT);
+        jestClientService.createIndexMapping(INDEX_NAME_SEARCHRESULT, TYPE_NAME_TVSHOWSEARCHRESULT, "es_config_json/mapping_searchresult_tvshow.json");
+        jestClientService.createIndexMapping(INDEX_NAME_SEARCHRESULT, TYPE_NAME_MOVIESEARCHRESULT, "es_config_json/mapping_searchresult_movie.json");
+
     }
 
 }

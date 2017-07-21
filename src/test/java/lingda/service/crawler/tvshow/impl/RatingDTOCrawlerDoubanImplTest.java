@@ -1,7 +1,6 @@
-package lingda.service.crawler.impl;
+package lingda.service.crawler.tvshow.impl;
 
 import lingda.model.dto.DoubanDTO;
-import lingda.model.dto.RatingDTO;
 import lingda.service.crawler.RatingCrawler;
 import org.junit.Test;
 import org.junit.runner.RunWith;

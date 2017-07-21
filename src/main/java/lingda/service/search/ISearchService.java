@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by lingda on 28/06/2017.
  */
-public interface SearchService {
+public interface ISearchService {
 
     List<TVShowSearchResult> searchTVShow(SearchTerm searchTerm);
 

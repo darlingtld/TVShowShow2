@@ -1,4 +1,4 @@
-package lingda.service.crawler;
+package lingda.service.crawler.tvshow;
 
 import lingda.model.dto.DownLoadLink;
 import lingda.model.dto.SearchTerm;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ShowCrawler {
 
     /**
-     * @param searchTerm the searchFuzzy term
+     * @param searchTerm the search term
      * @return a map containing the show name and the url, null if nothing is found
      */
     List<TVShowSearchResult> search(SearchTerm searchTerm);

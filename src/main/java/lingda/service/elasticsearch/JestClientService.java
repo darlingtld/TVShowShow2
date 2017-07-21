@@ -132,8 +132,8 @@ public class JestClientService implements Serializable {
         }
     }
 
-    public void createIndexMapping(String indexName, String typeName) throws IOException, URISyntaxException {
-        Path path = Paths.get(ClassLoader.getSystemResource("es_config_json/mapping_searchresult_tvshow.json").toURI());
+    public void createIndexMapping(String indexName, String typeName, String jsonFileName) throws IOException, URISyntaxException {
+        Path path = Paths.get(ClassLoader.getSystemResource(jsonFileName).toURI());
         String mappingJson = new String(ByteStreams.toByteArray(new FileInputStream(path.toFile())));
         JestResult result = client.execute(new PutMapping.Builder(indexName, typeName, mappingJson).build());
         if (result.getResponseCode() != 200) {

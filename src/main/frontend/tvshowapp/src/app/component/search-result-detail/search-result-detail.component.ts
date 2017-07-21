@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TvshowSearchResult} from '../../model/tvshow-search-result';
-import {ShowService} from '../../service/show.service';
-import {Rating} from "../../model/rating";
+import {Rating} from '../../model/rating';
+import {RatingService} from '../../service/rating.service';
 
 @Component({
   selector: 'app-search-result-detail',
@@ -13,11 +13,11 @@ export class SearchResultDetailComponent implements OnInit {
   @Input() tvshowSearchResult: TvshowSearchResult;
   rating: Rating;
 
-  constructor(private showService: ShowService) {
+  constructor(private ratingService: RatingService) {
   }
 
   ngOnInit() {
-    this.showService.getTvshowDoubanRating(this.tvshowSearchResult.name, this.tvshowSearchResult.englishName)
+    this.ratingService.getTvshowDoubanRating(this.tvshowSearchResult.name, this.tvshowSearchResult.englishName)
       .then((rating: any) => this.rating = rating);
   }
 

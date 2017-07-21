@@ -1,0 +1,78 @@
+{
+  "properties": {
+    "name": {
+      "type": "text",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "store": "no",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "ik_pinyin_analyzer"
+        }
+      }
+    },
+    "englishName": {
+      "type": "text",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "store": "no",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "ik_pinyin_analyzer"
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "store": "no",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "ik_pinyin_analyzer"
+        }
+      }
+    },
+    "year": {
+      "type": "integer"
+    },
+    "status": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "category": {
+      "type": "text",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "store": "no",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "ik_pinyin_analyzer"
+        }
+      }
+    },
+    "detailUrl": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "imgUrl": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    }
+  }
+}

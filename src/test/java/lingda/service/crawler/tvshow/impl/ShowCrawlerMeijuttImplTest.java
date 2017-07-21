@@ -1,4 +1,4 @@
-package lingda.service.crawler.impl;
+package lingda.service.crawler.tvshow.impl;
 
 import lingda.model.dto.DownLoadLink;
 import lingda.model.dto.TVShowSearchResult;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 

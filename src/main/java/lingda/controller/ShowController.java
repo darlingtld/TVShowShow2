@@ -2,11 +2,11 @@ package lingda.controller;
 
 import com.google.common.collect.ImmutableMap;
 import lingda.model.dto.DownLoadLink;
-import lingda.model.dto.RatingDTO;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
-import lingda.service.crawler.ShowCrawler;
-import lingda.service.manager.ShowManager;
+import lingda.service.crawler.tvshow.ShowCrawler;
+import lingda.service.manager.impl.TVShowManagerDB;
+import lingda.service.search.impl.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,14 +23,17 @@ import java.util.List;
 public class ShowController {
 
     @Autowired
-    private ShowManager showManager;
+    private TVShowManagerDB tvShowManagerDB;
+
+    @Autowired
+    private RatingService ratingService;
 
     @Autowired
     private ShowCrawler meijuttShowCrawler;
 
     @GetMapping
     public List<TVShow> getShowList() {
-        return showManager.getShowList();
+        return tvShowManagerDB.getShowList();
     }
 
     @GetMapping("/downloadlinks")
@@ -40,11 +43,6 @@ public class ShowController {
 
     @GetMapping("/tvshow")
     public TVShowSearchResult getTVShow(@RequestParam("detailUrl") String detailUrl) {
-        return showManager.searchTVShowSearchResult(ImmutableMap.of("detailUrl", detailUrl));
-    }
-
-    @GetMapping("/rating/douban")
-    public RatingDTO getRatingFromDouban(@RequestParam("name") String showName, @RequestParam(value = "englishName", required = false) String englishName) {
-        return showManager.getRatingFromDouban(showName, englishName);
+        return tvShowManagerDB.searchTVShowSearchResult(ImmutableMap.of("detailUrl", detailUrl));
     }
 }

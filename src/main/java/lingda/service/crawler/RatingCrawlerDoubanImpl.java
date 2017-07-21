@@ -1,10 +1,9 @@
-package lingda.service.crawler.impl;
+package lingda.service.crawler;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lingda.model.dto.DoubanDTO;
 import lingda.model.dto.RatingDTO;
-import lingda.service.crawler.RatingCrawler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

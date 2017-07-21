@@ -3,7 +3,7 @@ package lingda.controller;
 import lingda.model.dto.MovieSearchResult;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
-import lingda.service.search.SearchService;
+import lingda.service.search.ISearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +21,7 @@ import java.util.List;
 public class SearchController {
 
     @Autowired
-    private SearchService searchService;
+    private ISearchService searchService;
 
     @PostMapping({"", "/show"})
     public List<TVShowSearchResult> searchTVShow(@RequestBody SearchTerm searchTerm) {

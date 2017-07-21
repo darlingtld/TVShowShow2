@@ -16,6 +16,7 @@ import { DefaultImgDirective } from './directive/default-img.directive';
 import { CategoryNavbarComponent } from './component/category-navbar/category-navbar.component';
 import { DownloadSectionComponent } from './component/download-section/download-section.component';
 import { DownloadLinkComponent } from './component/download-link/download-link.component';
+import {RatingService} from './service/rating.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { DownloadLinkComponent } from './component/download-link/download-link.c
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, AppRouteModule
   ],
-  providers: [ShowService, SearchService],
+  providers: [ShowService, SearchService, RatingService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

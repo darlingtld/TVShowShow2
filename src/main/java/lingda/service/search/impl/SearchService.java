@@ -1,10 +1,11 @@
 package lingda.service.search.impl;
 
 import lingda.model.dto.MovieSearchResult;
+import lingda.model.dto.SearchResult;
 import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.service.cache.SearchResultCache;
-import lingda.service.search.SearchService;
+import lingda.service.search.ISearchService;
 import lingda.util.StringSimilarityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,9 @@ import java.util.List;
  * Created by lingda on 28/06/2017.
  */
 @Service
-public class SearchServiceImpl implements SearchService {
+public class SearchService implements ISearchService {
 
-    private static Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(SearchService.class);
 
     @Autowired
     private SearchResultCache searchResultCache;
@@ -39,12 +40,14 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<MovieSearchResult> searchMovie(SearchTerm searchTerm) {
         logger.info("search movie with search term {}", searchTerm);
-
-        return null;
+//        search result list from dygod
+        List<MovieSearchResult> movieSearchResults = new ArrayList<>(searchResultCache.getMovieOrSearchOnline(searchTerm));
+        movieSearchResults.sort(searchResultComparator(searchTerm));
+        return movieSearchResults;
     }
 
     //    TODO optimize the algorithm to order the searchFuzzy results
-    Comparator<TVShowSearchResult> searchResultComparator(SearchTerm searchTerm) {
+    Comparator<SearchResult> searchResultComparator(SearchTerm searchTerm) {
         return (o1, o2) -> {
             double o1Sim = StringSimilarityUtil.sim(o1.getName().toLowerCase(), searchTerm.getTerm().toLowerCase()) + StringSimilarityUtil.sim(o1.getEnglishName().toLowerCase(), searchTerm.getTerm().toLowerCase());
             double o2Sim = StringSimilarityUtil.sim(o2.getName().toLowerCase(), searchTerm.getTerm().toLowerCase()) + StringSimilarityUtil.sim(o1.getEnglishName().toLowerCase(), searchTerm.getTerm().toLowerCase());

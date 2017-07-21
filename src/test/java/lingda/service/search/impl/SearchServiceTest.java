@@ -22,10 +22,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SearchServiceImplTest {
+public class SearchServiceTest {
 
     @Autowired
-    private SearchServiceImpl searchService;
+    private SearchService searchService;
 
     @Test
     public void shouldGetTVShowSearchResults() {

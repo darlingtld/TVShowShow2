@@ -1,4 +1,4 @@
-package lingda.service.crawler.impl;
+package lingda.service.crawler.tvshow.impl;
 
 import com.google.common.collect.ImmutableMap;
 import lingda.model.dto.DownLoadLink;
@@ -6,8 +6,8 @@ import lingda.model.dto.SearchTerm;
 import lingda.model.dto.TVShowSearchResult;
 import lingda.model.pojo.TVShow;
 import lingda.service.cache.DocumentHttpGetCache;
-import lingda.service.crawler.ShowCrawler;
-import lingda.service.manager.ShowManager;
+import lingda.service.crawler.tvshow.ShowCrawler;
+import lingda.service.manager.IShowManager;
 import lingda.util.NumericMapperUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,6 +16,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -46,9 +47,10 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
     private DocumentHttpGetCache documentHttpGetCache;
 
     @Autowired
-    private ShowManager showManagerDBImpl;
+    @Qualifier("tvShowManagerDB")
+    private IShowManager<TVShow, TVShowSearchResult> showManagerDB;
 
-    //    the searchFuzzy is done by the source site, no need to filter again
+    //    the search is done by the source site, no need to filter again
     @Override
     public List<TVShowSearchResult> search(final SearchTerm searchTerm) {
         logger.info("start searching from {} for term {}", site, searchTerm);
@@ -70,7 +72,7 @@ public class ShowCrawlerMeijuttImpl implements ShowCrawler {
     @Override
     public List<DownLoadLink> searchDownloadLinks(final String detailUrl) {
         try {
-            TVShow tvShow = new TVShow(showManagerDBImpl.searchTVShowSearchResult(ImmutableMap.of("detailUrl", detailUrl)));
+            TVShow tvShow = new TVShow(showManagerDB.searchTVShowSearchResult(ImmutableMap.of("detailUrl", detailUrl)));
             Document doc = Jsoup.connect(detailUrl).get();
             Elements elements = doc.getElementsByAttributeValue("class", "down_url");
             return elements.stream().map(element -> element.attr("value"))

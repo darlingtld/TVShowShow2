@@ -19,7 +19,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ShowManagerESTest {
+public class TVShowManagerESTest {
 
     @Autowired
     private JestClientService jestClientService;
@@ -27,7 +27,7 @@ public class ShowManagerESTest {
     @Value("${elasticsearch.index.searchresult}")
     private String INDEX_NAME;
 
-    @Value("${elasticsearch.type.searchresult}")
+    @Value("${elasticsearch.type.tvshowsearchresult}")
     private String TYPE_NAME;
 
     @Before
@@ -41,7 +41,7 @@ public class ShowManagerESTest {
 
     @Test
     public void testCreateMapping() throws IOException, URISyntaxException {
-        jestClientService.createIndexMapping("test_index", "test_mapping");
+        jestClientService.createIndexMapping("test_index", "test_mapping", "");
     }
 
     @Test
