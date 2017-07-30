@@ -1,4 +1,4 @@
-package lingda.service.crawler;
+package lingda.service.crawler.rating;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

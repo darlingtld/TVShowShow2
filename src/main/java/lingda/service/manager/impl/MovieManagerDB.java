@@ -8,7 +8,7 @@ import lingda.dao.RatingRepository;
 import lingda.model.dto.MovieSearchResult;
 import lingda.model.dto.SearchTerm;
 import lingda.model.pojo.Movie;
-import lingda.service.crawler.RatingCrawler;
+import lingda.service.crawler.rating.RatingCrawler;
 import lingda.service.elasticsearch.JestClientService;
 import lingda.service.manager.IShowManager;
 import org.slf4j.Logger;

@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
-import {TvshowSearchResult} from '../model/tvshow-search-result';
 import {Observable} from 'rxjs/Observable';
+import {SearchResult} from '../model/search-result';
 
 @Injectable()
 export class SearchService {
@@ -13,9 +13,9 @@ export class SearchService {
     this.searchUrl = 'search';
   }
 
-  search(term: string): Observable<TvshowSearchResult[]> {
-    return this.http.post(this.searchUrl, {term: term})
-      .map(response => response.json() as TvshowSearchResult[])
+  search(category: string, term: string): Observable<SearchResult[]> {
+    return this.http.post(`${this.searchUrl}/${category}`, {term: term})
+      .map(response => response.json() as SearchResult[])
   }
 
   private handleError(error: any): Promise<any> {

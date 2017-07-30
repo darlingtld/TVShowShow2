@@ -1,4 +1,4 @@
-package lingda.service.crawler;
+package lingda.service.crawler.rating;
 
 import lingda.model.dto.DoubanDTO;
 

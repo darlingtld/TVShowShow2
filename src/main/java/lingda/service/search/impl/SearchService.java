@@ -49,22 +49,26 @@ public class SearchService implements ISearchService {
     //    TODO optimize the algorithm to order the searchFuzzy results
     Comparator<SearchResult> searchResultComparator(SearchTerm searchTerm) {
         return (o1, o2) -> {
-            double o1Sim = StringSimilarityUtil.sim(o1.getName().toLowerCase(), searchTerm.getTerm().toLowerCase()) + StringSimilarityUtil.sim(o1.getEnglishName().toLowerCase(), searchTerm.getTerm().toLowerCase());
-            double o2Sim = StringSimilarityUtil.sim(o2.getName().toLowerCase(), searchTerm.getTerm().toLowerCase()) + StringSimilarityUtil.sim(o1.getEnglishName().toLowerCase(), searchTerm.getTerm().toLowerCase());
-            if ((o1.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o1.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))
-                    && !(o2.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o2.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))) {
-                return -1;
-            } else if (!(o1.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o1.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))
-                    && (o2.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o2.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))) {
-                return 1;
-            } else {
-                if (o1Sim == o2Sim) {
-                    return o2.getYear() - o1.getYear();
+            try {
+                double o1Sim = StringSimilarityUtil.sim(o1.getName().toLowerCase(), searchTerm.getTerm().toLowerCase()) + StringSimilarityUtil.sim(o1.getEnglishName().toLowerCase(), searchTerm.getTerm().toLowerCase());
+                double o2Sim = StringSimilarityUtil.sim(o2.getName().toLowerCase(), searchTerm.getTerm().toLowerCase()) + StringSimilarityUtil.sim(o1.getEnglishName().toLowerCase(), searchTerm.getTerm().toLowerCase());
+                if ((o1.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o1.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))
+                        && !(o2.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o2.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))) {
+                    return -1;
+                } else if (!(o1.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o1.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))
+                        && (o2.getName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()) || o2.getEnglishName().toLowerCase().contains(searchTerm.getTerm().toLowerCase()))) {
+                    return 1;
                 } else {
-                    return o2Sim > o1Sim ? 1 : -1;
+                    if (o1Sim == o2Sim) {
+                        return o2.getYear() - o1.getYear();
+                    } else {
+                        return o2Sim > o1Sim ? 1 : -1;
+                    }
                 }
+            } catch (Exception e) {
+                logger.error("error in comparing search result.  reason is {}", e.getMessage());
+                return 0;
             }
-
         };
     }
 }

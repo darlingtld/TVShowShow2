@@ -1,7 +1,7 @@
 <ng-container *ngIf="searchResultList |async; let searchResultItems">
   <div class="loader" *ngIf="isLoading">Loading...</div>
   <app-search-result-detail *ngFor="let searchResult of searchResultItems"
-                            [tvshowSearchResult]="searchResult">
+                            [showSearchResult]="searchResult">
   </app-search-result-detail>
   <div class="empty-result-indicator" *ngIf="!isLoading && searchResultItems.length==0">No results found.  Try use another search string</div>
 </ng-container>

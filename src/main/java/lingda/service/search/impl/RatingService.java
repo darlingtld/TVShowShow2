@@ -4,7 +4,7 @@ import lingda.dao.RatingRepository;
 import lingda.model.dto.DoubanDTO;
 import lingda.model.dto.RatingDTO;
 import lingda.model.pojo.Rating;
-import lingda.service.crawler.RatingCrawler;
+import lingda.service.crawler.rating.RatingCrawler;
 import lingda.service.search.IRatingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

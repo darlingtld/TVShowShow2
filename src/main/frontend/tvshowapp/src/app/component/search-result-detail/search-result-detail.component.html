@@ -1,30 +1,30 @@
-<div class="search-result-detail" *ngIf="tvshowSearchResult">
+<div class="search-result-detail" *ngIf="showSearchResult">
   <div class="search-result-main-section">
     <div class="search-result-pic">
-      <img [src]="tvshowSearchResult.imgUrl" [appDefaultImg]="'search-result-detail-default-pic.jpg'"/>
+      <img [src]="showSearchResult.imgUrl" [appDefaultImg]="'search-result-detail-default-pic.jpg'"/>
     </div>
     <div class="search-result-info">
-      <span class="name">{{tvshowSearchResult.name}}</span>
-      <span class="badge badge-info">{{tvshowSearchResult.category}}</span>
-      <span class="badge badge-success">{{tvshowSearchResult.status}}</span>
-      <span class="badge badge-primary">{{tvshowSearchResult.year}}</span>
-      <span class="badge badge-warning">{{tvshowSearchResult.tvSource}}</span>
+      <span class="name">{{showSearchResult.name}}</span>
+      <span class="badge badge-info">{{showSearchResult.category}}</span>
+      <span class="badge badge-success">{{showSearchResult.status}}</span>
+      <span class="badge badge-primary">{{showSearchResult.year}}</span>
+      <!--<span class="badge badge-warning">{{showSearchResult.tvSource}}</span>-->
       <span class="rating">豆瓣评分:</span><span class="badge badge-info">{{rating? rating.average: '未知'}}</span>
       <div>
-        <span class="english-name">{{tvshowSearchResult.englishName}}</span>
+        <span class="english-name">{{showSearchResult.englishName}}</span>
       </div>
       <div>
         <p class="description">
-          {{tvshowSearchResult.description.length > 300 ?
-          (tvshowSearchResult.description | slice:0:300) + '...'
-          : tvshowSearchResult.description}}
+          {{showSearchResult.description.length > 300 ?
+          (showSearchResult.description | slice:0:300) + '...'
+          : showSearchResult.description}}
         </p>
       </div>
     </div>
   </div>
   <div class="operation">
-    <a [routerLink]="['/show', 'downloadlinks']" [queryParams]="{ detailUrl: tvshowSearchResult.detailUrl }">下载链接</a>
-    <a [routerLink]="['/show', 'downloadlinks']" [queryParams]="{ detailUrl: tvshowSearchResult.detailUrl }">在线观看</a>
+    <a [routerLink]="['/show', 'downloadlinks']" [queryParams]="{ detailUrl: showSearchResult.detailUrl }">下载链接</a>
+    <a [routerLink]="['/show', 'downloadlinks']" [queryParams]="{ detailUrl: showSearchResult.detailUrl }">在线观看</a>
     <a [routerLink]="['tracks']">收藏</a>
   </div>
 </div>

@@ -30,7 +30,8 @@ export class SearchFormComponent implements OnInit {
   }
 
   gotoSearchResult(term: string) {
-    const link = ['/search'];
+    const category = this.route.firstChild.routeConfig.path;
+    const link = [`/search/${category}`];
     this.router.navigate(link, {queryParams: {term: term}});
   }
 }
